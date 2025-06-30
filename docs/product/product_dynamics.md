@@ -73,7 +73,7 @@
 
 2. 新增发送后回调事件
 
-因解散群组或聊天室导致的用户退出，环信服务器向你的 App Server 发送的回调请求。详情请参见 [成员离开事件](/document/server-side/callback_group_room_leave.html#因解散群组-聊天室导致的用户退出) 。
+因解散群组或聊天室导致的用户退出，环信服务器向你的 App Server 发送的回调请求。详情请参见 [成员离开事件](/document/server-side/callback_group_room_leave.html#解散群组-聊天室导致用户退出) 。
 
 ## 2025-01
 

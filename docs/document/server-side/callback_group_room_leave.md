@@ -12,16 +12,15 @@
 
 ### 回调时机
 
-1. 通过客户端主动退出了群组/聊天室。
-2. 由于网络等原因，用户离线 2 分钟后退出了聊天室。
+通过客户端主动退出了群组/聊天室。
 
 ### 回调请求
 
 #### 请求示例
 
-以下以退出聊天室事件为例进行介绍。
+下面以退出聊天室事件为例进行介绍。
 
-- 主动退出聊天室。退出群组事件不支持 `payload.action` 字段，其他字段的含义与聊天室相同。
+主动退出聊天室。退出群组事件不支持 `payload.action` 字段，其他字段的含义与聊天室相同。
 
 ```json
 {
@@ -45,7 +44,34 @@
 }
 ```
 
-- 因离线退出聊天室。群组无此事件。
+#### 请求字段说明
+
+| 字段名称         | 类型   | 描述                                                         |
+| :------------- | :----- | :----------------------------------------------------------- |
+| `callId`       | String   | `callId` 为每个回调请求的唯一标识，格式为 `App Key_UUID`。 | 
+| `security`     | String | 签名，格式如下: `MD5（callId+secret+timestamp）`。详见 [配置环信控制台回调规则](/product/enable_and_configure_IM.html#配置回调规则)。|
+| `payload`       | Object | 事件内容。                                                     |
+| `payload.member` | JSON | 退出群组/聊天室的用户 ID。        | 
+| `payload.action` | JSON | `user_quit`：退出聊天室。<br/>该字段只适用于退出聊天室事件，不适用于退出群组事件。| 
+| `payload.type` | Array  | 退出方式：`QUIT` 表示主动退出群组/聊天室。     |
+| `appkey`       | String | 你在环信管理后台注册的应用唯一标识。  |
+| `id`           | String | 群组/聊天室 ID。                                                 |
+| `type`         | String | 区分群组或聊天室事件：<br/> - `GROUP`：群组 <br/> - `CHATROOM` ：聊天室   |
+| `event`        | String | 对于群组和聊天室，该参数的值固定为 `group_op_event`。接收方可按此字段区分是否是群组/聊天室操作事件。 | 
+| `operation`    | String | 操作。用户主动退出群组/聊天室的操作为 `LEAVE`。 |
+| `operator`     | String | 操作人。                     | 
+| `member_count`     | Int | 用户退出后，群组/聊天室的总成员数。                     |
+| `timestamp`    | Long   | 操作完成的时间戳。             | 
+
+## 因离线退出聊天室
+
+### 回调时机
+
+由于网络等原因，用户离线 2 分钟后退出了聊天室。群组无此事件。
+
+### 回调请求
+
+#### 请求示例
 
 ```json
 {
@@ -74,16 +100,16 @@
 | `callId`       | String   | `callId` 为每个回调请求的唯一标识，格式为 `App Key_UUID`。 | 
 | `security`     | String | 签名，格式如下: `MD5（callId+secret+timestamp）`。详见 [配置环信控制台回调规则](/product/enable_and_configure_IM.html#配置回调规则)。|
 | `payload`       | Object | 事件内容。                                                     |
-| `payload.member` | JSON | 退出群组/聊天室的用户 ID。        | 
-| `payload.action` | JSON | 该字段只适用于退出聊天室事件，不适用于退出群组事件：<br/> - `user_quit`：退出聊天室的用户 ID。<br/> - `user_offline`：因离线退出聊天室。 | 
-| `payload.type` | Array  | 退出方式：`QUIT` 表示主动退出群组或聊天室或者因离线退出聊天室。     |
+| `payload.member` | JSON | 退出聊天室的用户 ID。        | 
+| `payload.action` | JSON |`user_offline`：因离线退出聊天室。<br/>该字段只适用于退出聊天室事件，不适用于退出群组事件。  | 
+| `payload.type` | Array  | 退出方式：`QUIT` 表示主动或离线退出聊天室，这里为因离线退出聊天室。     |
 | `appkey`       | String | 你在环信管理后台注册的应用唯一标识。  |
-| `id`           | String | 群组/聊天室 ID。                                                 |
+| `id`           | String | 聊天室 ID。                                                 |
 | `type`         | String | 区分群组或聊天室事件：<br/> - `GROUP`：群组 <br/> - `CHATROOM` ：聊天室   |
 | `event`        | String | 对于群组和聊天室，该参数的值固定为 `group_op_event`。接收方可按此字段区分是否是群组/聊天室操作事件。 | 
-| `operation`    | String | 操作。用户主动退出群组/聊天室的操作为 `LEAVE`。 |
+| `operation`    | String | 操作。用户主动退出聊天室的操作为 `LEAVE`。 |
 | `operator`     | String | 操作人。                     | 
-| `member_count`     | Int | 用户退出后，群组/聊天室的总成员数。                     |
+| `member_count`     | Int | 用户退出后，聊天室的总成员数。                     |
 | `timestamp`    | Long   | 操作完成的时间戳。             | 
 
 ## 被踢
@@ -193,7 +219,7 @@
 | `member_count`     | Int | 用户加入黑名单后，群组/聊天室的总成员数。                     |
 | `timestamp`    | Long   | 操作完成的时间戳。                | 
 
-## 因解散群组/聊天室导致的用户退出
+## 解散群组/聊天室导致用户退出
 
 ### 回调时机 
 
