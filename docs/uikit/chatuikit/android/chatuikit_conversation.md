@@ -1,10 +1,81 @@
-# 自定义会话列表
+# 会话列表页面
 
-你可以配置会话列表页面的标题栏、会话列表项。
+## 页面组件
+
+会话列表页面由 `ChatUIKitConversationListFragment` 实现，包括标题栏、搜索区域和会话列表。
 
 <ImageGallery>
   <ImageItem src="/images/uikit/chatuikit/android/custom_conversation_list.png" title="会话列表" />
 </ImageGallery>
+
+### 标题栏
+
+会话列表页面与聊天页面、联系人列表页面、群详情页面、联系人详情页面的标题栏均使用 `ChatUIKitTitleBar`。标题栏包含左、中、右三个区域，标题栏中的标题、头像、背景色、标题栏右侧按钮的显示图片和左侧的头像均可自定义，详见 [设置标题栏](#设置标题栏)。
+
+### 会话搜索栏
+
+会话搜索栏 `ChatUIKitSearchView` 实现会话搜索。点击搜索按钮，跳转到搜索页面，可按会话名称搜索会话。
+
+### 会话列表
+
+会话列表组件 `ChatUlKitConversationListLayout` 实现按会话中最新一条消息的时间（或改为时间）的倒序显示所有会话，包括：
+- 通过标题栏右侧的加号创建的本地会话。
+- 两个用户之间发送消息后创建的单聊会话。
+- 群组中发送消息后创建的群组会话。
+
+在会话列表中，置顶的会话排在列表最上方。
+
+### 会话列表项
+
+会话列表项组件 `UikitItemConversationListBinding` 实现单条会话展示，包括会话名称、最后一条消息、最后一条消息的时间以及置顶和禁言状态等。
+
+- 对于单聊, 会话展示的名称为对端用户的昵称，若对端用户未设置昵称则展示对方的用户 ID；会话头像是对方的头像，如果没有设置则使用默认头像。
+- 对于群聊，会话名称为当前群组的名称，头像为默认头像。
+
+1. 点击会话列表项，跳转到会话详情页面。
+
+2. 长按会话列表中的会话列表项会显示会话操作弹窗，`ChatUIKitConversationListFragment` 中默认实现以下会话操作：
+
+<ImageGallery>
+  <ImageItem src="/images/uikit/chatuikit/android/conversation_long_press.png" title="会话长按显示的操作" />
+</ImageGallery>
+
+- **会话免打扰**：使用 `ChatUIKitConversationListViewModel` 提供的方法设置免打扰，例如:
+
+  - `makeSilentForConversation`：设置会话免打扰。
+  - `cancelSilentForConversation` ：取消会话免打扰。
+
+- **会话置顶**：使用 `ChatUIKitConversationListViewModel` 提供的方法设置会话置顶，例如:
+
+  - `pinConversation`：置顶一个会话。
+  - `unpinConversation`：取消会话置顶。
+
+- **会话标记已读**：使用 `ChatUIKitConversationListViewModel` 提供的 `makeConversionRead` 方法标记会话已读。
+
+- **会话删除**：使用 `ChatUIKitConversationListViewModel` 提供的方法 `deleteConversation` 方法删除会话。
+
+建议你在首次下载、卸载后重装应用等本地数据库无数据情况下拉取服务端会话列表。
+
+## 创建会话列表页面
+
+单群聊 UIKit 提供 `ChatUIKitConversationListFragment`，添加到 Activity 中即可使用。
+
+示例如下：
+
+```kotlin
+class ConversationListActivity: AppCompactActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_conversation_list)
+
+        ChatUIKitConversationListFragment.Builder()
+                        .build()?.let { fragment ->
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.fl_fragment, fragment).commit()
+                        }
+    }
+}
+```
 
 ## 自定义设置概览
 
@@ -323,36 +394,6 @@ ChatUIKitClient.setCustomActivityRoute(object : ChatUIKitCustomActivityRoute {
 ```
 
 关于设置会话头像和昵称，详见[用户自定义信息文档中的介绍](chatuikit_userinfo.html#设置会话头像和昵称)。
-
-## ChatUIKitConversationListFragment 中默认实现的功能
-
-`ChatUIKitConversationListFragment` 中默认实现会话免打扰、会话置顶、会话已读和会话删除功能。
-
-<ImageGallery>
-  <ImageItem src="/images/uikit/chatuikit/android/conversation_long_press.png" title="会话长按显示的操作" />
-</ImageGallery>
-
-### 免打扰
-
-使用 `ChatUIKitConversationListViewModel` 提供的方法设置免打扰，例如:
-
-- `makeSilentForConversation`：设置会话免打扰。
-- `cancelSilentForConversation` ：取消会话免打扰。
-
-### 会话置顶
-
-使用 `ChatUIKitConversationListViewModel` 提供的方法设置会话置顶，例如:
-
-- `pinConversation`：置顶一个会话。
-- `unpinConversation`：取消会话置顶。
-
-### 会话标记已读
-
-使用 `ChatUIKitConversationListViewModel` 提供的 `makeConversionRead` 方法标记会话已读。
-
-### 会话删除
-
-使用 `ChatUIKitConversationListViewModel` 提供的方法 `deleteConversation` 方法删除会话。
 
 ## 事件监听
 
