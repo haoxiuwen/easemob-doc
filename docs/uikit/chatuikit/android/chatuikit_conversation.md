@@ -114,7 +114,7 @@ ChatUIKitConversationListFragment.Builder()
 | setCustomAdapter()              | 设置自定义的适配器，默认为 `ChatUIKitConversationListAdapter`。       |
 | setCustomFragment()             | 设置自定义聊天 `Fragment`，需要继承自 `ChatUIKitConversationListFragment`。 |
 
-## 添加自定义会话布局
+## 添加自定义会话布局 // TODO：自定义会话列表
 
 开发者可以继承 `ChatUIKitConversationListAdapter` 实现自己的 `CustomConversationListAdapter`，然后将 `CustomConversationListAdapter` 设置到 `ChatUIKitConversationListFragment#Builder#setCustomAdapter` 中。
 
@@ -227,6 +227,16 @@ ChatUIKitConversationListFragment.Builder().useTitleBar()
     
 ```
 
+### 设置标题栏背景色
+
+设置标题栏的背景色：
+
+```kotlin
+
+binding?.titleConversations?.setBackgroundColor(ContextCompat.getColor(mContext,R.color.blue))
+    
+```
+
 ### 设置左侧头像
 
 ```kotlin
@@ -246,10 +256,11 @@ binding?.titleConversations?.let { titlebar->
     // 设置用户状态图标大小
     titlebar.setLogoStatusSize()
 }
-    
 ```
 
 ### 设置左侧头像及文本区域点击事件
+
+// TODO：这里的“文本区域点击事件” 是头像点击事件？
 
 ```kotlin
 // logo 图标区域点击事件 
@@ -261,6 +272,9 @@ binding?.titleConversations?.setTitleClickListener {}
 
 ### 设置中部标题
 
+// TODO：下面是设置文本或将文本替换为图片吧
+// TODO：添加如何设置中部标题字体和标题文本颜色
+
 ```kotlin
 // 文本设置
 ChatUIKitConversationListFragment.Builder().setTitleBarTitle("title")
@@ -269,11 +283,20 @@ binding?.titleConversations?.setTitleEndDrawable(R.drawable.conversation_title)
     
 ```
 
-### 设置右侧显示图标
+### 设置右侧图标及显示的操作
+
+// TODO：如何替换右侧图标。
+// TODO：如何设置多个图标。
+// TODO：下面只写了如何添加、隐藏 menu、
+
+
+// TODO：点击右侧图标后，会弹出菜单，需要明确这个菜单中支持的自定义的内容，包括
+// TODO：发起新会话图标、添加联系人图标、创建群组图标、加入公开群组图标、文字颜色、字体、背景颜色、点击动作
+
 
 一般情况下，右侧会支持设置多个图标。我们采用设置 Menu 的方式进行设置。
 
-`ChatUIKitConversationListFragment` 中有默认实现一个 `defaultMenu()` 的方法 添加默认的 menu 菜单。若默认菜单不满足需求，可以替换为自己的 menu 菜单，重写 `defaultMenu()` 方法。   
+`ChatUIKitConversationListFragment` 中有默认实现一个 `defaultMenu()` 的方法添加默认的 menu 菜单。若默认菜单不满足需求，可以替换为自己的 menu 菜单，重写 `defaultMenu()` 方法。   
 
 ```kotlin
     // 添加 menu
@@ -304,22 +327,14 @@ binding?.titleConversations?.setTitleEndDrawable(R.drawable.conversation_title)
 
 ### 设置返回按钮和事件监听
 
+// TODO：是标题栏左侧的按钮？是否支持替换返回按钮？仅支持显示或隐藏？
+
 ```kotlin
 
 //设置是否支持显示返回按钮：true：是；(默认) false: 否。   
 ChatUIKitConversationListFragment.Builder().enableTitleBarPressBack()
 //设置点击标题栏返回按钮的监听器。 
 ChatUIKitConversationListFragment.Builder().setTitleBarBackPressListener() 
-    
-```
-
-### 设置背景色
-
-设置标题栏的背景色：
-
-```kotlin
-
-binding?.titleConversations?.setBackgroundColor(ContextCompat.getColor(mContext,R.color.blue))
     
 ```
 
@@ -331,11 +346,16 @@ binding?.titleConversations?.setBackgroundColor(ContextCompat.getColor(mContext,
 
 // 是否使用默认的搜索功能（跳转 ChatUIKitSearchActivity 搜索页面）。目前支持搜索用户、会话、消息、黑名单用户。
 // true：是；(默认) false: 否。 
-ChatUIKitConversationListFragment.Builder().useSearchBar(true)
-    
+ChatUIKitConversationListFragment.Builder().useSearchBar(true)   
 ```
 
 ### 自定义搜索
+
+// TODO：搜索部分需要提供以下自定义：
+1. 搜索图标
+2. 搜索框占位符字体
+3. 搜索框文本颜色
+4. 搜索框背景颜色
 
 如果默认的搜索无法满足用户需求，可以通过 `setCustomActivityRoute` 修改跳转路由，跳转自己的搜索页面。
 
@@ -393,7 +413,115 @@ ChatUIKitClient.setCustomActivityRoute(object : ChatUIKitCustomActivityRoute {
     }
 ```
 
-关于设置会话头像和昵称，详见[用户自定义信息文档中的介绍](chatuikit_userinfo.html#设置会话头像和昵称)。
+
+
+### 设置会话列表项背景
+
+```kotlin
+    binding?.listConversation?.let{
+        it.setItemBackGround()      //设置条目的背景。   
+    }
+```
+
+### 设置会话列表项高度
+
+```kotlin
+    binding?.listConversation?.let{
+        it.setItemHeight()          //设置条目的高度。
+    }
+```
+
+### 设置会话列表项头像
+
+// TODO：可以设置显示隐藏头像吗？
+
+你可以设置会话列表项的默认头像，以及头像的大小、样式、圆角半径、头像边框宽度和颜色。
+
+// TODO：这句话还要吗？关于设置会话头像和昵称，详见[用户自定义信息文档中的介绍](chatuikit_userinfo.html#设置会话头像和昵称)。
+
+```kotlin
+    binding?.listConversation?.let{
+        it.setAvatarDefaultSrc()    //设置条目的默认头像。
+        it.setAvatarSize()          //设置条目头像的大小。
+        it.setAvatarShapeType()     //设置条目头像的样式，分为默认 ImageView 样式，圆形和矩形三种样式。
+        it.setAvatarRadius()        //设置条目头像的圆角半径，样式设置为矩形时有效。
+        it.setAvatarBorderWidth()   //设置条目头像边框的宽度。 
+        it.setAvatarBorderColor()   //设置条目头像边框的颜色。
+    }
+```
+
+### 设置会话列表项标题
+
+// TODO：这么说对吗？
+
+默认情况下，会话列表项的标题取决于会话类型：
+- 单聊会话：对端用户的昵称。
+- 群聊会话：群组名称。
+
+// TODO：可以设置标题的字体吗？
+
+```kotlin
+    binding?.listConversation?.let{
+        it.setNameTextSize()        //设置会话条目标题的文字大小。
+        it.setNameTextColor()       //设置会话条目标题的文字颜色。 
+        it.setMessageTextSize()     //设置会话条目内容的文字大小。
+        it.setMessageTextColor()    //设置会话条目内容的文字颜色。  
+    }
+```
+
+### 设置会话列表项内容
+
+默认情况下，会话列表项的内容为单聊和群聊会话中的最新一条消息。
+
+// TODO：可以设置标题和副标题的字体吗？
+
+```kotlin
+    binding?.listConversation?.let{
+        it.setMessageTextSize()     //设置会话条目内容的文字大小。
+        it.setMessageTextColor()    //设置会话条目内容的文字颜色。  
+    }
+```
+
+### 设置会话列表项日期
+
+```kotlin
+    binding?.listConversation?.let{ 
+        it.setDateTextSize()        //设置会话条目日期的文字大小。
+        it.setDateTextColor()       //设置会话条目日期的文字颜色。
+    }
+```
+
+### 设置会话列表项长按菜单
+
+长按会话列表项，弹出的菜单默认包括会话免打扰、会话置顶、会话标记已读和会话删除。
+
+你可以添加菜单项、清除所有菜单项以及设置指定菜单项是否可见。
+
+// TODO：需要添加如何设置菜单的文字颜色、字体和提示框的背景颜色。
+
+```kotlin
+    binding?.listConversation?.let{
+        it.addItemMenu()            //添加长按单项。 
+        it.clearMenu()              //清除长按菜单项。
+        it.findItemVisible()        //设置指定菜单项是否可见。   
+    }
+```
+
+### 设置消息未读计数图标
+
+// TODO：需要补充，是否可以设置，有没有默认的图标，是否可以隐藏。
+
+### 设置会话免打扰图标
+
+// TODO：需要补充，是否可以设置，有没有默认的图标，是否可以隐藏。
+
+### 设置会话列表项其他配置
+
+适配器、装饰器
+
+### 设置会话页面的 footer // TODO：有个名称吗？
+
+// TODO：这部分包括：聊天按钮图标、联系人按钮图标、个人资料按钮图标、背景颜色、聊天按钮动作、联系人按钮动作、个人资料按钮动作
 
 ## 事件监听
 
