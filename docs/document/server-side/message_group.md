@@ -11,15 +11,15 @@
 <table>
 <tbody>
 <tr>
-<td width="161">
+<th width="161">
 <p><strong>消息类型</strong></p>
-</td>
-<td width="189">
+</th>
+<th width="189">
 <p><strong>发送方式</strong></p>
-</td>
-<td width="279">
+</th>
+<th width="279">
 <p><strong>备注</strong></p>
-</td>
+</th>
 </tr>
 <tr>
 <td width="161">
@@ -898,8 +898,7 @@ curl -X POST -i "https://XXXX/XXXX/XXXX/messages/chatgroups" \
 :::tip
 1. 定向消息不写入会话列表，不计入群组会话的未读消息数。
 2. 群组定向消息的漫游功能默认关闭，使用前需联系商务开通。
-3. 群组中发送的定向消息均同步给发送方。
-4. 如果作为接收方的一些用户为离线状态，对于定向消息，可以收到离线推送通（若配置了离线推送服务），上线后可以收到离线消息（若未超过离线消息的存储时长）。
+3. 如果作为接收方的一些用户为离线状态，对于定向消息，可以收到离线推送通（若配置了离线推送服务），上线后可以收到离线消息（若未超过离线消息的存储时长）。
 :::
 
 #### 请求 URL
@@ -1017,8 +1016,9 @@ curl -X POST -i 'https://XXXX/XXXX/XXXX/messages/chatgroups/users' \
 | 400      | message_send_error | params to's size can't exceed limit 3  | 请求参数 `to` 数量超出最大限制 3 个群组 ID。 | 输入正确的请求参数 `to`（数量限制在 3 个群组 ID 以内）。 |
 | 400      | message_send_error | message is too large    | 请求体内容中 `body` 和 `ext` 字段的内容过大。  | 限制 `body` 和 `ext` 字段的内容。   |
 | 403      | message_send_error | message send reach limit  | 消息发送频率超出限制(默认 1 秒内只允许发送 20 条群聊消息) | 限制消息发送频率，详见[文档说明](message_group.html)。|
+| 405       |  |   | 请求方法错误。| 该 REST API 的请求方法为 POST，请勿使用 GET、PUT 或 DELETE 等方法。 |
 
-2. 对于定向消息来说，如果返回的 HTTP 状态码非 `200`，表示请求失败，可能提示以下错误码：
+1. 对于定向消息来说，如果返回的 HTTP 状态码非 `200`，表示请求失败，可能提示以下错误码：
 
 | HTTP 状态码 | 错误类型      | 错误提示          | 可能原因       | 处理建议       |
 |:---------|:-------------------|:-------------------|:-----------|:----------------------|

@@ -1,6 +1,6 @@
 # 百度小程序集成介绍
 
-百度小程序 SDK 集成步骤如下：
+本文介绍如何将环信即时通讯 IM SDK 快速集成到百度小程序中。集成步骤如下：
 
 ## 步骤 1 注册环信账号
 
@@ -8,7 +8,7 @@
 
 ## 步骤 2 搭建百度小程序开发环境
 
-首先需要下载并安装 [开发者工具](https://smartprogram.baidu.com/docs/introduction/tool/)，然后按照百度小程序的 [接入流程](https://smartprogram.baidu.com/docs/develop/tutorial/startdevelop/) 一步步创建一个小程序。
+首先需要下载并安装 [开发者工具](https://smartprogram.baidu.com/docs/introduction/tool/)，然后按照百度小程序的 [接入流程](https://smartprogram.baidu.com/docs/develop/tutorial/startdevelop/) 创建一个小程序。
 
 ## 步骤 3 配置服务器域名
 
@@ -61,7 +61,7 @@
 
 ```javascript
 //使用示例
-import EasemobChat from "../sdk/Easemob-chat-4.x.x.js"; // 4.0 版本sdk
+import EasemobChat from "../sdk/Easemob-chat-4.x.x.js"; // 4.0 版本 SDK
 ```
 
 ## 步骤 6 实例化 SDK
@@ -79,4 +79,4 @@ WebIM.conn = new WebIM.connection({
 });
 ```
 
-小程序端的基本功能和 Web 端一致，请参考 [Web 端文档](/document/web/integration.html)。
+小程序端的基本功能和 Web 端一致，请参考 [Web 端文档](/document/web/user_relationship.html)。

@@ -9,6 +9,7 @@ const CALL_DOC_PATH = path.resolve(__dirname, "../../callkit");
 const callKitPlatformList = getSubDirectories(CALL_DOC_PATH);
 
 const callKitSidebar = [
+  { text: "入门指引", link: "beginner_guide.html" },
   {
     /*
       text: 分组标题
@@ -31,6 +32,7 @@ const callKitSidebar = [
   },
   { text: "跑通示例项目", link: "sample_runthrough.html" },
   { text: "快速开始", link: "quickstart.html" },
+  { type: "separator" } as any,
   { text: "CallKit 架构", link: "architecture.html" },
   { text: "集成 CallKit", link: "integration.html" },
   { text: "权限", link: "permission.html", only: ["android"] },
@@ -41,8 +43,9 @@ const callKitSidebar = [
   { text: "自定义资源", link: "customization.html" },
   { text: "通话信令", link: "signaling.html" },
   { text: "API 概览", link: "api_overview.html" },
-  { text: "常见问题", link: "common_issue.html" },
+  { type: "separator" } as any,
   { text: "更新日志", link: "releasenote.html" },
+  { text: "常见问题", link: "common_issue.html" },
   { text: "设计指南", link: "design_guide.html" },
   { text: "历史文档", link: "easecallkit.html" }
 ];
@@ -88,7 +91,9 @@ function handleSidebarItem(platform, sidebar, docPath, kitType) {
   if (!needThisPlatform) {
     return null;
   }
-
+  if(sidebar.type === 'separator') {
+    return { ...sidebar, type: 'separator' };
+  }
   if (hasChildren) {
     let newchildren = sidebar.children
       .map((s) => handleSidebarItem(platform, s, docPath, kitType))
