@@ -1,5 +1,10 @@
 // place your custom styles here
 
+/* 所有面包屑（包括主题默认面包屑）统一使用 > 作为层级分隔符。 */
+.theme-container .breadcrumb li + li::before {
+  content: " > ";
+}
+
 html, body {
   background-color: #FAFDFF;
 }
@@ -50,6 +55,40 @@ button {
 
 .theme-container {
   color: var(--text-color);
+}
+
+/* 产品动态的发版表格：压缩时间列，将空间留给动态描述。 */
+.theme-container.product-dynamics-page .theme-hope-content
+  table:has(> thead > tr > th:nth-child(4):last-child) {
+  th:nth-child(1) {
+    width: 20%;
+  }
+
+  th:nth-child(2) {
+    width: 42%;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 7.5rem;
+    white-space: nowrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  th:nth-child(4) {
+    width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .theme-container.product-dynamics-page .theme-hope-content
+    table:has(> thead > tr > th:nth-child(4):last-child) {
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 6rem;
+    }
+  }
 }
 
 /* header */
@@ -786,6 +825,13 @@ button {
   .theme-hope-content {
     display: none;
   }
+}
+
+/* 面包屑目录页没有侧边栏：正文可见，并与标题保持相同宽度。 */
+.no-sidebar.breadcrumb-landing .theme-hope-content:not(.custom) {
+  display: block;
+  width: auto;
+  max-width: var(--content-width);
 }
 
 @media (min-width: 1680px) {
