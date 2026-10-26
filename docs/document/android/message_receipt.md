@@ -216,6 +216,13 @@ EMClient.getInstance()
 
 调用 `asyncGetGroupMessageReadReceipts` 从服务器批量获取消息的已读回执详情。单次最多传入 20 条消息，且所有消息必须属于同一群聊会话。
 
+该接口通过 `EMValueCallBack<List<EMMessageReadReceipt>>` 回调返回消息已读回执详情列表。每个 `EMMessageReadReceipt` 包含以下信息：
+
+- `getMessageId()`：获取消息 ID。
+- `getConversationId()`：获取会话 ID，群聊场景下为群组 ID。
+- `getReadCount()`：获取群聊消息的已读人数。
+- `isPeerReceipt()`：获取单聊消息接收方是否已发送已读回执。`true` 表示已发送，`false` 表示未发送。该信息用于单聊场景，群聊场景应读取 `getReadCount()`。
+
 ```java
 // 异步方法。
 EMClient.getInstance()
