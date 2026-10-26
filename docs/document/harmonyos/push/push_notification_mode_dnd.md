@@ -142,17 +142,17 @@ if (pushManager) {
 
 ## 免打扰模式
 
-完成 SDK 初始化和成功登录 app 后，你可以对 app 以及各类型的会话开启离线推送功能以及通过设置免打扰模式关闭推送。
+完成 SDK 初始化并成功登录 App 后，你可以配置 App 全局以及单聊、群聊会话的推送接收规则。
 
 HarmonyOS SDK 通过 `PushManager#setSilentModeForAll` 配置 App 全局免打扰规则，支持以下两种模式：
 
 - `SILENT_MODE_DURATION`（一次性免打扰）：通过 `SilentDurationTypeParam` 设置。配置后立即生效，到期后自动恢复，适用于临时不希望被打扰的场景。
-- `SILENT_MODE_INTERVAL`（每日循环免打扰）：通过 `SilentIntervalTypeParam` 设置每日循环生效的时间段。例如，设置为 `23:00` 至次日 `07:00`，适用于固定的休息时间。
+- `SILENT_MODE_INTERVAL`（每日循环免打扰）：仅支持 App 全局，通过 `PushManager#setSilentModeForAll` 传入 `SilentIntervalTypeParam` 设置每日循环生效的时间段，不支持在会话级设置。例如，设置为 `23:00` 至次日 `07:00`，适用于固定的休息时间。
 
 | 规则模式    | 配置方式    | 类型   | 描述  | 生效范围    |
 | :--- | :--- | :--- | :--- | :--- |
-| `SILENT_MODE_INTERVAL` | 调用 `PushManager#setSilentModeForAll`，传入 `SilentIntervalTypeParam` | `SilentIntervalTypeParam` | 每日循环生效的免打扰时段，采用 24 小时制，精确到分钟。开始时间和结束时间的小时取值范围为 `0`–`23`，分钟取值范围为 `0`–`59`。<br/> - **每日定时触发**：设置后，每天在指定时段自动进入免打扰模式。<br/> - **跨天支持**：若结束时间早于开始时间，则免打扰时段跨天生效。例如，设置为 `10:00`–`08:00`，表示当日 `10:00` 至次日 `08:00` 免打扰。<br/> - **全天与关闭**：开始时间和结束时间相同时，视为全天免打扰；均设置为 `00:00` 时，关闭免打扰模式。 <br/> - **单时段限制**：每天仅支持设置一个免打扰时段，新配置会覆盖原配置。<br/> - **生效时机**：设置后立即生效。例如，当日 `11:00` 设置 `08:00`–`12:00`，则当天从 `11:00` 起进入免打扰模式，直至 `12:00`；此后每天按照 `08:00`–`12:00` 生效。 | 仅 App 全局。         |
-| `SILENT_MODE_DURATION` | 调用 `PushManager#setSilentModeForAll`，传入 `SilentDurationTypeParam` | `SilentDurationTypeParam` | 免打扰时长，单位为分钟。免打扰时长的取值范围为 [0,10080]，`0` 表示该参数无效，`10080` 表示免打扰模式持续 7 天。<br/> 与免打扰时间段的设置每天生效不同，该参数为一次有效。设置后立即生效，例如，上午 8:00 将 app 层级的 `SILENT_MODE_DURATION` 设置为 240 分钟（4 个小时），则 app 在当天 8:00-12:00 处于免打扰模式。<br/> - 若该参数和 `SILENT_MODE_INTERVAL` 均设置，免打扰模式当日在这两个时间段均生效，例如，上午 8:00 将 app 级的 `SILENT_MODE_INTERVAL` 设置为 8:00-10:00，免打扰时长设置为 240 分钟（4 个小时），则 app 在当前 8:00-12:00 和以后每天 8:00-10:00 处于免打扰模式。 | App 或单聊/群聊会话。 |
+| `SILENT_MODE_INTERVAL` | 调用 `PushManager#setSilentModeForAll`，传入 `SilentIntervalTypeParam` | `SilentIntervalTypeParam` | 每日循环生效的免打扰时段，采用 24 小时制，精确到分钟。开始时间和结束时间的小时取值范围为 `0`–`23`，分钟取值范围为 `0`–`59`。<br/> - **每日定时触发**：设置后，每天在指定时段自动进入免打扰模式。<br/> - **跨天支持**：若结束时间早于开始时间，则免打扰时段跨天生效。例如，设置为 `10:00`–`08:00`，表示当日 `10:00` 至次日 `08:00` 免打扰。<br/> - **全天与关闭**：开始时间和结束时间相同时，视为全天免打扰；均设置为 `00:00` 时，关闭免打扰模式。 <br/> - **单时段限制**：每天仅支持设置一个免打扰时段，新配置会覆盖原配置。<br/> - **生效时机**：设置后立即生效。例如，当日 `11:00` 设置 `08:00`–`12:00`，则当天从 `11:00` 起进入免打扰模式，直至 `12:00`；此后每天按照 `08:00`–`12:00` 生效。 | 仅 App 全局，不支持会话级。 |
+| `SILENT_MODE_DURATION` | 调用 `PushManager#setSilentModeForAll` 或 `PushManager#setSilentModeForConversation`，传入 `SilentDurationTypeParam` | `SilentDurationTypeParam` | 免打扰时长，单位为分钟。免打扰时长的取值范围为 [0,10080]，`0` 表示该参数无效，`10080` 表示免打扰模式持续 7 天。<br/> 与免打扰时间段的设置每天生效不同，该参数为一次有效。设置后立即生效，例如，上午 8:00 将 app 层级的 `SILENT_MODE_DURATION` 设置为 240 分钟（4 个小时），则 app 在当天 8:00-12:00 处于免打扰模式。<br/> - 若该参数和 `SILENT_MODE_INTERVAL` 均设置，免打扰模式当日在这两个时间段均生效，例如，上午 8:00 将 app 级的 `SILENT_MODE_INTERVAL` 设置为 8:00-10:00，免打扰时长设置为 240 分钟（4 个小时），则 app 在当前 8:00-12:00 和以后每天 8:00-10:00 处于免打扰模式。 | App 或单聊/群聊会话。 |
 
 **`SILENT_MODE_INTERVAL` 和 `SILENT_MODE_DURATION` 同时设置时的叠加规则**
 
@@ -172,7 +172,9 @@ HarmonyOS SDK 通过 `PushManager#setSilentModeForAll` 配置 App 全局免打�
 
 ## 设置全局推送接收规则
 
-调用 `PushManager#setSilentModeForAll` 设置 App 全局推送通知方式或每日免打扰时间段。每次调用传入一个 `PushRemindType` 或 `SilentIntervalTypeParam`。
+调用 `PushManager#setSilentModeForAll` 设置 App 全局推送通知方式、一次性免打扰时长或每日免打扰时间段。
+
+每次调用传入 `PushRemindType`、`SilentDurationTypeParam` 或 `SilentIntervalTypeParam` 中的一种。
 
 ```typescript
 async function setGlobalPushRules(): Promise<void> {
@@ -198,6 +200,12 @@ async function setGlobalPushRules(): Promise<void> {
     }
   };
   await pushManager.setSilentModeForAll(interval);
+
+  // 设置 App 全局一次性免打扰，持续 240 分钟（4 小时）。
+  const duration: SilentDurationTypeParam = {
+    silentDuration: 240
+  };
+  await pushManager.setSilentModeForAll(duration);
 }
 
 setGlobalPushRules()
@@ -213,6 +221,12 @@ setGlobalPushRules()
 
 调用 `PushManager#getSilentModeForAll` 获取 App 全局推送通知方式和免打扰设置。
 
+- 对于推送通知方式，通过返回结果 `SilentModeResult` 的 `getRemindType()` 获取。
+
+- 对于免打扰时长 `SILENT_MODE_DURATION`，通过返回结果 `SilentModeResult` 的 `getExpireTimestamp()` 获取一次性免打扰的到期时间戳。
+
+- 对于每日循环免打扰时间段，通过 `getSilentModeStartTime()` 和 `getSilentModeEndTime()` 获取。
+
 ```typescript
 const pushManager = ChatClient.getInstance().pushManager();
 
@@ -220,9 +234,10 @@ if (pushManager) {
   pushManager.getSilentModeForAll()
     .then((result: SilentModeResult): void => {
       // 获取 App 全局推送通知方式。
-      const remindType = result.getRemindType();
+      const remindType: PushRemindType = result.getRemindType();
 
-      // 获取服务端返回的免打扰过期 Unix 时间戳。
+      // 获取 SILENT_MODE_DURATION 对应的一次性免打扰到期时间戳。
+      // 返回值并非设置时传入的 silentDuration 分钟数。
       const expireTimestamp: number =
         result.getExpireTimestamp();
 
@@ -248,26 +263,56 @@ if (pushManager) {
 
 ## 设置指定会话的推送接收规则
 
-SDK 支持通过 `PushManager#setSilentModeForConversation` 设置指定单聊或群聊会话的推送通知方式，不支持设置会话级免打扰时间段或一次性免打扰时长。
+调用 `PushManager#setSilentModeForConversation` 为指定单聊或群聊会话设置推送接收规则。每次调用传入以下一种参数：
+
+- `PushRemindType`：设置推送通知方式。
+- `SilentDurationTypeParam`：设置一次性免打扰时长，通过 `silentDuration` 指定时长，单位为分钟，最大为 `10080` 分钟（7 天）。配置后立即生效，到期后按照其他仍生效的推送接收规则处理。
+
+会话级不支持 `SILENT_MODE_INTERVAL`，不要传入 `SilentIntervalTypeParam`。
+
+以下示例依次设置指定群聊会话的推送通知方式和一次性免打扰时长，可按需调用其中一项或两项。
 
 ```typescript
-const conversationId: string = 'group-id';
-const conversationType: ConversationType = ConversationType.GroupChat;
-const pushManager = ChatClient.getInstance().pushManager();
+async function setConversationPushRules(): Promise<void> {
+  const conversationId: string = 'group-id';
+  const conversationType: ConversationType =
+    ConversationType.GroupChat;
+  const pushManager = ChatClient.getInstance().pushManager();
 
-if (pushManager) {
-  pushManager.setSilentModeForConversation(
+  if (!pushManager) {
+    return;
+  }
+
+  // 设置推送通知方式为仅接收提及当前用户的消息。
+  await pushManager.setSilentModeForConversation(
     conversationId,
     conversationType,
     PushRemindType.MENTION_ONLY
-  )
-    .then((result: SilentModeResult): void => {
-      // 设置成功。
-    })
-    .catch((error: ChatError): void => {
-      // 设置失败，根据错误码和错误信息处理。
-    });
+  );
+
+  // 设置一次性免打扰时长为 240 分钟（4 小时）。
+  const duration: SilentDurationTypeParam = {
+    silentDuration: 240
+  };
+  const result: SilentModeResult =
+    await pushManager.setSilentModeForConversation(
+      conversationId,
+      conversationType,
+      duration
+    );
+
+  // 获取本次免打扰的到期时间戳。
+  const expireTimestamp: number = result.getExpireTimestamp();
 }
+
+setConversationPushRules()
+  .then((): void => {
+    // 两项设置均成功。
+  })
+  .catch((error: ChatError): void => {
+    // 某一步设置失败，根据错误码和错误信息处理。
+    // 已成功的设置不会因后续步骤失败而自动回滚。
+  });
 ```
 
 ## 获取指定会话的推送接收规则
@@ -294,7 +339,7 @@ if (pushManager) {
           result.getRemindType();
       }
 
-      // 获取服务端返回的免打扰过期 Unix 时间戳。
+      // 获取服务端返回的免打扰时长的到期时间戳。
       const expireTimestamp: number =
         result.getExpireTimestamp();
     })
@@ -344,7 +389,7 @@ if (pushManager && conversations.length > 0) {
 | API 名称 | 所属模块/类 | 说明 |
 | :--- | :--- | :--- |
 | [`syncConversationsSilentModeFromServer`](#获取所有会话的推送通知方式设置) | `PushManager` | 从服务器同步所有会话的推送通知方式并保存到本地数据库。 |
-| [`setSilentModeForConversation`](#设置指定会话的推送通知方式) | `PushManager` | 设置指定单聊或群聊会话的推送通知方式。 |
+| [`setSilentModeForConversation`](#设置指定会话的推送接收规则) | `PushManager` | 设置指定单聊或群聊会话的推送接收规则。 |
 | [`getSilentModeForConversation`](#获取指定会话的推送接收规则) | `PushManager` | 获取指定单聊或群聊会话的推送接收规则。 |
 | [`setSilentModeForAll`](#设置全局推送接收规则) | `PushManager` | 设置 App 全局推送接收规则。 |
 | [`getSilentModeForAll`](#获取全局推送接收规则) | `PushManager` | 获取 App 全局推送接收规则。 |
