@@ -22,7 +22,7 @@
 
 ## 置顶消息
 
-调用 `ChatManager#pinMessage(messageId)`，传入非空消息 ID，返回 `Promise<void>`。置顶成功后，置顶成功后，会话中的其他用户会收到 `ChatMessageEventListener#onMessagePinChanged` 回调。多设备登录场景下，当前账号的其他在线设备同步到该状态变化后，也会收到该回调。
+调用 `ChatManager#pinMessage(messageId)`，传入非空消息 ID，返回 `Promise<void>`。置顶成功后，会话中的其他用户会收到 `ChatMessageEventListener#onMessagePinChanged` 回调。多设备登录场景下，当前账号的其他在线设备同步到该状态变化后，也会收到该回调。
 
 同一条消息可被有置顶权限的多个用户重复置顶，但仅保留最近一次成功置顶的信息。因此，通过 `ChatManager#getMessagePinInfo` 获取的 `ChatMessagePinInfo` 中，`operatorId` 和 `pinTime` 分别对应最近一次置顶的操作者用户 ID 和置顶时间。
 

@@ -127,7 +127,7 @@ try {
 | :--- | :--- | :--- | :--- |
 | `msgTypes` | `ChatMessageType[]` | 是 | 要搜索的消息类型数组。 |
 | `timestamp` | `number` | 是 | 搜索起始毫秒时间戳；传 `-1` 从当前时间开始。 |
-| `count` | `number` | 否 | 默认 20，RN 公开接口说明的范围为 1–100。 |
+| `count` | `number` | 否 | 每次期望返回的消息数，取值范围为 [1,100]，默认为 20。 |
 | `from` | `string` | 否 | 发送方用户 ID，不是消息 ID；不限发送方时显式传空字符串。 |
 | `direction` | `ChatSearchDirection` | 否 | 默认 `UP`，可设为 `DOWN`。 |
 
@@ -137,7 +137,7 @@ try {
 
 ```typescript
 try {
-  // count：要查询的消息条数，RN 公开接口说明的取值范围为 [1,100]
+  // count：每次期望返回的消息数，取值范围为 [1,100]，默认为 20
   // from：会话中发送方的用户 ID。若传空字符串，搜索对发送方不限制
   const types = [ChatMessageType.TXT, ChatMessageType.VOICE];
   const messages = await ChatClient.getInstance().chatManager.searchMessages({
@@ -168,7 +168,7 @@ try {
 
 ```typescript
 try {
-  // count：要查询的消息条数，RN 公开接口说明的取值范围为 [1,100]
+  // count：每次期望返回的消息数，取值范围为 [1,100]，默认为 20
   // from：当前会话中发送方的用户 ID。若传空字符串，搜索对发送方不限制
   const types = [ChatMessageType.TXT, ChatMessageType.VOICE];
   const conversation = await ChatClient.getInstance().chatManager
@@ -209,6 +209,8 @@ try {
 
 设置 `ChatMessageSearchScope.Content` 时，匹配内容如下：
 
+// TODO：研发确认：自定义消息中还支持搜索  `params` 中的字符串值？
+
 | 消息类型 | 关键字匹配的消息内容 | 关键字搜索内容示例 |
 | :--- | :--- | :--- |
 | 文本消息 | `ChatTextMessageBody.content` | 文本消息的实际内容“你好世界”。 |
@@ -217,10 +219,10 @@ try {
 | 视频消息 | `ChatVideoMessageBody.displayName` | 视频文件名“video.mp4”。 |
 | 文件消息 | `ChatFileMessageBody.displayName` | 文件名“report.pdf”。 |
 | 位置消息 | `ChatLocationMessageBody.address` | 地址，例如“北京市朝阳区”。 |
-| 自定义消息 | `ChatCustomMessageBody.event` | 自定义事件名“gift” |
+| 自定义消息 | `ChatCustomMessageBody.event` 和 `params` 中的字符串值 | 自定义事件名“gift”，或自定义参数中的值“completed”。 |
 | 合并消息 | `ChatCombineMessageBody.title` 和 `ChatCombineMessageBody.summary` | 标题或摘要，例如“聊天记录”或“包含 5 条消息”。 |
 
-RN V5 的位置消息体没有公开独立的 `buildingName` 属性；通过 RN 发送位置消息时，可将建筑物名称包含在 `address` 中。
+React Native SDK 的位置消息体没有公开独立的 `buildingName` 属性；发送位置消息时，可将建筑物名称包含在 `address` 中。
 
 ### 只搜索扩展信息
 

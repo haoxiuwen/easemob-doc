@@ -273,7 +273,7 @@ try {
 | :--- | :--- | :--- |
 | `convId` / `convType` | `string` / `ChatConversationType` | 会话 ID 和类型。单聊传对端用户 ID，群聊传群组 ID，聊天室传聊天室 ID；获取会话对象时传入。 |
 | `startMsgId` | `string` | 分页查询的起始消息 ID。传空字符串并使用 `UP` 时，从最新消息开始加载。结果不包含起始消息。 |
-| `loadCount` | `number` | 每页加载的消息数，取值范围为 `[1,400]`。 |
+| `loadCount` | `number` | 每页期望加载的消息数，取值范围为 [1,50]，默认为 20。 |
 | `direction` | `ChatSearchDirection` | 默认 `UP`，按消息时间戳逆序加载；`DOWN` 为正序加载。 |
 
 ```typescript
@@ -282,7 +282,7 @@ try {
     .getConversation('<conversation_id>', ChatConversationType.PeerChat, false);
   if (conversation) {
     // startMsgId：查询的起始消息 ID。传空字符串时，从最新消息开始按消息时间戳逆序加载
-    // loadCount：每页期望加载的消息数，RN 公开接口说明的取值范围为 [1,50]
+    // loadCount：每页期望加载的消息数，取值范围为 [1,50]，默认为 20
     const pagedMessages = await conversation.getMsgs({
       startMsgId: '',
       loadCount: 20,

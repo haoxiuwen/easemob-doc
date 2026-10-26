@@ -125,8 +125,6 @@ async function editMessageAttributes(message: ChatMessage): Promise<void> {
 注册监听器的示例如下：
 
 ```typescript
-import { ChatClient, ChatMessageEventListener } from 'react-native-chat-sdk';
-
 const manager = ChatClient.getInstance().chatManager;
 const listener: ChatMessageEventListener = {
   onMessageContentChanged: (message, lastModifyOperatorId, lastModifyTime) => {

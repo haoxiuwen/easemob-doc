@@ -206,7 +206,7 @@ manager.addMessageListener(listener);
 - `msgId`：消息 ID。
 - `convId`：消息所属的群聊会话 ID。
 - `readCount`：该群消息的已读回执数量，可用于展示已读人数。
-- `isPeerReceipt`：回执是否来自对方。`true` 表示来自其他群成员；`false` 表示来自当前用户的其他登录设备。
+- `isPeerReceipt`：回执是否来自对方。`true` 表示来自其他群成员；`false` 表示来自当前用户的其他登录设备。 // TODO：研发确认：AI 是这样说的，对吗：本接口的查询结果不提供可靠的回执来源标识，不应通过该字段判断回执来自其他群成员还是当前用户的其他设备。
 
 每次最多查询 20 条消息，且这些消息必须属于同一群聊会话。查询前，请确保目标消息已保存在本地；本地不存在的消息 ID 会被忽略。
 
@@ -265,10 +265,10 @@ ChatClient.getInstance().chatManager.getGroupMessageReadReceipts([
 | 操作 | 作用 | 是否通知原消息发送方 | 是否改变会话未读数 |
 | :--- | :--- | :--- | :--- |
 | `sendMessageReadReceipts` | 为指定消息发送已读回执。 | 是 | 否 |
-| `clearConversationUnreadMessageCount(convId)` | 清零指定本地会话的未读数，并同步当前账号其他设备。 | 否 | 是 |
-| `clearAllConversationUnreadMessageCount()` | 清零所有本地会话未读数，并同步当前账号其他设备。 | 否 | 是 |
+| `clearConversationUnreadMessageCount(convId)` | 清零指定本地会话的未读数，并尝试同步至当前账号的其他设备。 | 否 | 是 |
+| `clearAllConversationUnreadMessageCount()` | 清零所有本地会话未读数，并尝试同步至当前账号的其他设备。 | 否 | 是 |
 
-清零会话未读数的详细说明见 [会话未读数](conversation_unread.html)。读取消息本身不会发送回执或清零未读数。
+上述清零接口的 Promise 正常完成，并不表示当前账号的其他设备已同步完成。清零会话未读数的详细说明见 [会话未读数](conversation_unread.html)。读取消息本身不会发送回执或清零未读数。
 
 ## 注意事项
 

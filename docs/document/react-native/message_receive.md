@@ -224,8 +224,9 @@ function readImagePaths(message: ChatMessage): void {
 
 GIF 消息仍为 `ChatMessageType.IMAGE`，缩略图和附件下载方法与普通图片相同，详见 [接收图片消息](#接收图片消息)。
 
+// TODO：研发确认
 :::notice
-虽然 `ChatImageMessageBody` 声明了可选属性 `isGif`，当前 RN v5.x 的 Android 和 iOS 图片消息序列化都未将原生 GIF 标记回传给 JavaScript；缺失时模型默认设为 `false`。因此不能仅凭 `body.isGif === false` 判断消息不是 GIF。
+虽然 `ChatImageMessageBody` 声明了可选属性 `isGif`，React Native SDK 5.0.0 的 Android 和 iOS 图片消息序列化都未将原生 GIF 标记回传给 JavaScript；缺失时模型默认设为 `false`。因此不能仅凭 `body.isGif === false` 判断消息不是 GIF。
 :::
 
 业务需要可靠区分 GIF 时，可在发送时通过 `attributes` 约定资源格式，或在下载后检查文件格式。文件扩展名只能作为提示，不应当作可靠的格式校验。以下示例读取业务侧约定的字段，字段不是 SDK 自动生成：
@@ -261,7 +262,7 @@ ChatClient.getInstance().chatManager.addMessageListener(messageListener);
   
 3. 为避免重复下载，建议优先检查本地是否已存在对应的视频文件或缩略图；如果本地已有可用资源，可直接复用。
 
-以下函数使用前面定义的 `downloadCallback`。`fileExists` 仍由业务侧封装，用于确认本地文件可访问：
+以下示例演示下载视频文件，并通过 `callback` 处理下载结果：
 
 ```typescript
 // 下载视频文件
@@ -287,7 +288,7 @@ function downloadVideo(message: ChatMessage): void {
 }
 ```
 
-4. 从 `ChatVideoMessageBody` 读取视频原文件和缩略图地址。下载成功后将 `updatedMessage` 传给下列函数，读取最新本地路径：
+4. 从 `ChatVideoMessageBody` 读取视频原文件和缩略图地址。以下示例读取当前消息对象中的地址；下载成功后，请对回调返回的 `updatedMessage` 执行相同操作，读取最新本地路径：
 
 ```typescript
 if (message.body.type === ChatMessageType.VIDEO) {

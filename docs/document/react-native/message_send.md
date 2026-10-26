@@ -339,7 +339,7 @@ try {
   console.error('发送调用失败：', error);
 }
 ```
-
+// TODO：研发确认：是否需要写明这个
 :::notice
 React Native SDK 5.x 的 Android 桥接会将 `isGif` 显式传给底层 SDK；iOS 桥接通过本地文件创建图片消息体，不单独传递该标记。请确保 iOS 侧传入的文件本身是有效的 GIF 文件，并在双端验证动画展示效果。
 :::
@@ -775,7 +775,7 @@ try {
 1. 合并转发最多支持 10 层嵌套，每层最多包含 300 条消息。
 2. 无论 `ChatOptions#serverTransfer` 为 `true` 还是 `false`，SDK 都会将合并消息附件上传至环信服务器。
 3. 转发一条已有的合并消息时，使用 [转发单条消息](message_forward.html#转发单条消息) 的方式。
-4. 合并消息不支持搜索。
+4. 本地消息内容搜索支持匹配合并消息的标题和摘要，不会展开合并消息附件并搜索其中原始消息的内容。
 :::
 
 #### 使用建议
@@ -1128,7 +1128,7 @@ const webhookEnv = routedMessage.webhookEnv;
 ## 注意事项
 
 - `sendMessage` 的 `Promise` 与消息最终发送回调是两个阶段。不要只根据 `Promise` 完成更新消息状态。
-- React Native SDK 5.x 的 `ChatMessage#isNeedReadReceipt` 默认为 `false`。需要已读回执时，应在发送前显式设为 `true`。
+- React Native SDK 5.0.0 的 `ChatMessage#isNeedReadReceipt` 默认为 `false`。需要已读回执时，应在发送前显式设为 `true`。
 - 群聊和聊天室消息必须使用正确的 `ChatMessageChatType`，且当前用户需已加入目标群组或聊天室。
 - 附件路径必须能被原生层访问，并在最终回调返回前保持有效。临时文件被清理或权限失效会导致上传失败。
 - 定向消息、内容审核、回调路由和发送频率限制可能依赖控制台配置或商务开通。接入前应确认服务端能力。

@@ -26,7 +26,7 @@ SDK 支持单向删除服务端的消息：
 调用 `ChatManager#deleteAllMessageAndConversation(clearServerData)` 清空当前用户的全部本地会话及消息，包括单聊、群聊和聊天室会话。通过 `clearServerData` 参数可以决定是否同时单向清空当前用户在服务端的会话及消息：
 
 - `true`：同时单向清空当前用户服务端的全部会话及消息。清空后，当前用户无法再从服务端获取这些数据，其他用户不受影响。
-- `false`：仅清空当前设备的本地会话及消息，保留服务端数据。
+- （默认）`false`：仅清空当前设备的本地会话及消息，保留服务端数据。
 
 该方法返回 `Promise<void>`。成功后应重新读取本地会话列表并刷新界面；也可通过 `ChatMessageEventListener#onConversationsUpdate` 监听会话列表变化。
 
@@ -131,8 +131,6 @@ ChatClient.getInstance().chatManager.deleteMessagesWithTimestamp(
 调用 `ChatManager#deleteMessage(convId, convType, msgId)`，或会话对象的 `deleteMessage(msgId)`，从本地数据库和该会话的内存缓存中删除指定消息，不会删除服务端消息。
 
 ```typescript
-import { ChatClient, ChatConversationType } from 'react-native-chat-sdk';
-
 ChatClient.getInstance().chatManager.deleteMessage(
   '<target_user_id>',
   ChatConversationType.PeerChat,
