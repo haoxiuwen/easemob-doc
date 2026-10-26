@@ -13,7 +13,7 @@ React Native SDK 提供群成员名片管理功能，支持群成员名片的设
 群成员名片管理功能主要由 `ChatGroupManager` 和 `ChatGroupEventListener` 提供。SDK 通过“主动设置或拉取、本地内存存储、事件通知、消息触发自动同步”的机制管理群成员名片，具体如下：
 
 1. 当前登录用户可通过 `ChatGroupManager#updateGroupNamecard` 设置或更新自己在指定群组中的群成员名片。
-2. 当群成员名片发生变更并同步到本地内存后，SDK 会通过 `ChatGroupEventListener#onUserGroupNamecardChanged` 事件通知业务层。
+2. SDK 收到群成员名片变更通知，或通过消息自动同步群成员名片并更新本地内存后，会通过 `ChatGroupEventListener#onUserGroupNamecardChanged` 事件通知业务层。
 3. SDK 支持通过 `ChatGroupManager#fetchMemberInfoListFromServer` 从服务端分页获取群成员信息，并将返回的群成员名片写入本地内存。
 4. SDK 支持通过 `ChatGroupManager#getGroupNamecard` 从本地内存读取指定成员在指定群组中的群成员名片。
 5. 若在初始化 SDK 时将 `ChatOptions#enableUserInfo` 设为 `true`（默认为 `false`），发送群聊消息时会自动附带发送方群成员名片更新时间；接收方开启该功能后，若检测到消息中的更新时间晚于本地内存中的更新时间，或本地尚无对应名片缓存，会自动从服务端拉取最新群成员名片，获取成功后更新本地内存，并触发事件通知业务层。
@@ -33,11 +33,12 @@ React Native SDK 提供群成员名片管理功能，支持群成员名片的设
 
 SDK 提供 `ChatGroupEventListener`，用于监听群成员名片更新事件。建议在业务初始化阶段完成监听注册，并在组件卸载或不再需要监听时移除监听器。
 
-当群成员名片发生变更并同步到本地内存后，SDK 会触发 `ChatGroupEventListener#onUserGroupNamecardChanged` 事件。该事件适用于以下场景：
+SDK 收到群成员名片变更通知，或通过消息自动同步群成员名片并更新本地内存后，会触发 `ChatGroupEventListener#onUserGroupNamecardChanged` 事件。该事件适用于以下场景：
 
 - 当前登录用户更新群成员名片后，群内其他 **在线成员** 收到变更通知。
-- 调用服务端接口获取到最新群成员信息并更新本地内存后。
 - 开启 [用户信息自动管理功能](userinfo_provider.html) 后，接收方因接收消息触发自动同步并更新本地内存后。
+
+主动调用 `ChatGroupManager#fetchMemberInfoListFromServer` 获取群成员信息时，不会因本次拉取触发该事件。获取成功后，请根据接口返回结果刷新界面，不应等待名片变更事件。
 
 ```typescript
 const groupNamecardListener: ChatGroupEventListener = {
@@ -92,11 +93,11 @@ try {
 获取成功后，相关群成员信息会自动更新至本地内存。有关该接口的更多说明，详见 [管理群成员](group_members.html#获取群成员列表)。
 
 ```typescript
-// `limit` 的取值范围为 1-50。
+// limit：每页期望返回的群成员数量，默认 200。
 // 首次调用时将 `cursor` 传入空字符串 `''`，后续调用时传入上一次返回的 `result.cursor`。
 try {
   const result = await ChatClient.getInstance()
-    .groupManager.fetchMemberInfoListFromServer('groupId', '', 200);
+    .groupManager.fetchMemberInfoListFromServer('groupId', '', 50);
 
   for (const member of result.list ?? []) {
     console.log('群成员信息：', {
@@ -107,12 +108,12 @@ try {
     });
   }
 
-  // 获取下一页时，将 result.cursor 作为 cursor 传入。
+  // result.cursor 非空时，将其作为 cursor 获取下一页；为空时停止翻页
   // const nextResult = await ChatClient.getInstance()
   //   .groupManager.fetchMemberInfoListFromServer(
   //     'groupId',
   //     result.cursor,
-  //     200
+  //     50
   //   );
 } catch (error) {
   console.error('获取群成员信息失败：', error);
@@ -184,7 +185,7 @@ function removeSenderInfoListener(): void {
 
 - 群成员名片是用户在特定群组中的显示信息，不同群组之间互不影响。
 - `ChatGroupManager#getGroupNamecard` 仅查询本地内存，不会主动从服务端获取最新数据。
-- 更新名片后，发给群内其他成员的变更通知仅投递给在线用户；主动获取成员信息或通过消息自动同步引起的本地更新，也可触发 `ChatGroupEventListener#onUserGroupNamecardChanged`。
+- 更新名片后，发给群内其他成员的变更通知仅投递给在线用户；通过消息自动同步引起的本地更新，也可触发 `ChatGroupEventListener#onUserGroupNamecardChanged`。主动获取成员信息不会因本次拉取触发该事件，应根据接口返回结果刷新界面。
 - 若需通过消息自动同步群成员名片，必须在 SDK 初始化时将 `ChatOptions.enableUserInfo` 设为 `true`。
 - 开启 [用户信息自动管理](userinfo_provider.html#通过消息获取发送方信息) 后，群成员名片的自动更新依赖消息触发；若业务需要主动获取最新数据，仍应调用服务端接口。
 - `ChatGroupMember` 中的群名片字段为 `namecard`，`ChatMessageSenderInfo` 中的群名片字段为 `groupNameCard`，两者的大小写不同。

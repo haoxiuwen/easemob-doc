@@ -22,7 +22,9 @@
 
 ### 分页获取群成员信息
 
-调用 `ChatGroupManager#fetchMemberInfoListFromServer` 分页获取群成员信息，返回的成员信息包括群成员的用户 ID、角色、入群时间、群名片、昵称和头像。
+调用 `ChatGroupManager#fetchMemberInfoListFromServer` 分页获取群成员信息，返回的成员信息包括群成员的用户 ID、角色、入群时间和群名片。
+
+`nickname` 和 `avatarUrl` 为可选字段。初始化时将 `ChatOptions.enableUserInfo` 设为 `true`（默认为 `false`）后，SDK 会尝试补充成员的昵称和头像。获取群成员基本信息和群成员名片本身不要求开启该功能。
 
 ```typescript
 try {

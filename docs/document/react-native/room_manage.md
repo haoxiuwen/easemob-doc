@@ -107,7 +107,9 @@ try {
 }
 
 // 不再需要监听时，移除同一个监听器对象
-// ChatClient.getInstance().roomManager.removeRoomListener(joinListener);
+function removeJoinListener(): void {
+  ChatClient.getInstance().roomManager.removeRoomListener(joinListener);
+}
 ```
 
 ## 退出聊天室
@@ -214,7 +216,7 @@ try {
 | 字段 | 类型 | 描述 |
 | :--- | :--- | :--- |
 | `list` | `ChatRoom[] \| undefined` | 当前页的聊天室列表。 |
-| `pageCount` | `number` | 服务端返回的数量字段。若该值小于请求时传入的 `pageCount`，表示服务端没有更多聊天室数据。 |
+| `pageCount` | `number` | 服务端返回的数量字段。若该值小于请求时传入的 `pageSize`，表示服务端没有更多聊天室数据。 |
 
 `list` 返回的每个 `ChatRoom` 对象可读取以下主要字段：
 
@@ -231,17 +233,7 @@ try {
 
 `ChatRoomEventListener` 接口中提供了聊天室事件的监听接口。你可以通过注册聊天室监听器，获取聊天室事件，并作出相应处理。如不再使用该监听器，需要移除，防止出现内存泄露。
 
-示例代码如下：
-
-
-```typescript
-// 注册聊天室回调
-ChatClient.getInstance().roomManager.addRoomListener(roomListener);
-// 不再需要监听时，移除聊天室回调
-ChatClient.getInstance().roomManager.removeRoomListener(roomListener);
-```
-
-具体事件如下：
+先定义监听器，具体事件如下：
 
 ```typescript
 const roomListener: ChatRoomEventListener = {
@@ -313,6 +305,20 @@ const roomListener: ChatRoomEventListener = {
 };
 ```
 
+定义完成后注册监听器；不再需要监听时，调用清理函数移除同一个监听器对象：
+
+```typescript
+// 注册聊天室回调
+ChatClient.getInstance().roomManager.addRoomListener(roomListener);
+
+function removeRoomListener(): void {
+  // 不再需要监听时，移除同一个监听器对象
+  ChatClient.getInstance().roomManager.removeRoomListener(roomListener);
+}
+```
+
+// TODO：研发确认
+
 :::notice
 React Native SDK 5.0.0 的以下事件字段存在使用限制：
 
@@ -347,7 +353,9 @@ const countListener: ChatRoomEventListener = {
 ChatClient.getInstance().roomManager.addRoomListener(countListener);
 
 // 不再需要监听时，移除同一个监听器对象
-// ChatClient.getInstance().roomManager.removeRoomListener(countListener);
+function removeCountListener(): void {
+  ChatClient.getInstance().roomManager.removeRoomListener(countListener);
+}
 ```
 
 ## 接口列表

@@ -16,7 +16,7 @@
 
 调用 `ChatGroupManager#getGroupWithId` 可以根据群组 ID 从本地内存获取群组详情，该接口不会发起网络请求，返回 `Promise<ChatGroup | undefined>`。iOS 端在本地没有对应缓存时，也可能返回仅包含群组 ID 等默认信息的群组对象，不能仅根据是否返回对象判断当前用户是否已加入该群组。
 
-调用 `ChatGroupManager#fetchGroupInfoWithoutMembersFromServer` 可以从服务器获取最新群组详情，并更新本地缓存；返回的群组对象也可能为 `undefined`。该接口不返回群成员列表。如果需要群成员列表，需调用 `ChatGroupManager#fetchMemberInfoListFromServer` 或 `ChatGroupManager#fetchMemberListFromServer`，详见 [获取群成员列表](group_members.html#获取群成员列表)。 // TODO
+调用 `ChatGroupManager#fetchGroupInfoWithoutMembersFromServer` 可以从服务器获取最新群组详情，并更新本地缓存；返回的群组对象也可能为 `undefined`。该接口不会主动拉取群成员列表。返回对象中的 `memberList` 可能包含本地已有数据，不应将其作为完整、最新的群成员列表。如果需要群成员列表，需调用 `ChatGroupManager#fetchMemberInfoListFromServer` 或 `ChatGroupManager#fetchMemberListFromServer`，详见 [获取群成员列表](group_members.html#获取群成员列表)。
 
 若要在登录后从本地读取最新的已加入群组数据，需在 SDK 初始化时启用已加入群组数据同步，并等待同步完成，详见 [获取当前用户加入的群组列表](group_manage.html#获取当前用户加入的群组列表)。
 
@@ -91,8 +91,10 @@ try {
 
 群成员会通过 `ChatGroupEventListener#onDetailChanged` 收到群组详情更新回调。回调中的 `ChatGroup` 表示更新后的群组信息。为确保获取完整且最新的配置，建议在回调中调用 `ChatGroupManager#fetchGroupInfoWithoutMembersFromServer` 从服务器获取群组详情。
 
+// TODO：研发确认
+
 :::notice
-React Native SDK 5.0.0 的 Android 端返回的群对象未包含 `configs.inviteNeedConfirm`，该字段会被填充为 `false`，不能将其作为服务端实际配置。详情变更回调中的对象也不能据此判断该配置。// TODO
+React Native SDK 5.0.0 的 Android 端返回的群对象未包含 `configs.inviteNeedConfirm`，该字段会被填充为 `false`，不能将其作为服务端实际配置。详情变更回调中的对象也不能据此判断该配置。
 :::
 
 ## 修改群组名称
