@@ -37,7 +37,6 @@ SDK 提供 `GroupListener` 用于监听群成员名片更新事件。建议在�
 当群成员名片发生变更并同步到本地内存后，SDK 会触发 `GroupListener#onUserGroupNamecardUpdated`。该事件适用于以下场景：
 
 - 当前登录用户更新群成员名片后，群内其他 **在线成员** 收到变更通知。
-- [调用接口从服务端获取到最新群成员信息](group_members.html#分页获取群成员信息) 并更新本地内存后。
 - 开启 [用户信息自动管理功能](userinfo_provider.html) 后，接收消息触发发送方信息更新后。
 
 添加监听的示例代码如下所示：
