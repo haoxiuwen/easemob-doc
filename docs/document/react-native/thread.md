@@ -19,7 +19,12 @@
 
 所有群成员均可以调用 `ChatManager#createChatThread` 方法，基于一条群组消息新建消息话题。
 
-单设备登录时，消息话题所属群组的所有成员均会收到 `ChatMessageEventListener#onChatMessageThreadCreated` 回调；多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_CREATE`。
+单设备登录时，消息话题所属群组的所有成员均会收到 `ChatMessageEventListener#onChatMessageThreadCreated` 回调；Android 端多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_CREATE`。
+
+// TODO：研发确认
+:::notice
+React Native SDK 5.0.0 的 iOS 端无法正常将消息话题多设备事件转发至 `ChatMultiDeviceEventListener#onThreadEvent`，请勿依赖该回调刷新消息话题界面。应用可按需重新查询消息话题列表或详情。此限制不影响 `ChatMessageEventListener` 中的消息话题事件回调。
+:::
 
 示例代码如下：
 
@@ -47,7 +52,7 @@ try {
 
 仅消息话题所在群组的群主和群管理员可以调用 `ChatManager#destroyChatThread` 方法解散消息话题。
 
-单设备登录时，消息话题所属群组的所有成员均会收到 `ChatMessageEventListener#onChatMessageThreadDestroyed` 回调；多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_DESTROY`。
+单设备登录时，消息话题所属群组的所有成员均会收到 `ChatMessageEventListener#onChatMessageThreadDestroyed` 回调；Android 端多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_DESTROY`。
 
 :::tip
 解散消息话题后，将删除其本地会话和消息；消息话题所在群组解散后，也无法再使用该消息话题，需谨慎操作。
@@ -78,7 +83,7 @@ try {
 1. 收到 `ChatMessageEventListener#onChatMessageThreadCreated` 回调或 `ChatMessageEventListener#onChatMessageThreadUpdated` 回调，或调用 `ChatManager#fetchChatThreadWithParentFromServer` 方法从服务器获取指定群组的消息话题列表，从中获取到想要加入的消息话题 ID。
 2. 调用 `ChatManager#joinChatThread` 传入消息话题 ID 加入对应消息话题。
 
-多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_JOIN`。
+Android 端多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_JOIN`。
 
 示例代码如下：
 
@@ -103,7 +108,7 @@ try {
 
 消息话题成员均可以主动调用 `ChatManager#leaveChatThread` 方法退出消息话题，退出消息话题后，该成员将不会再收到消息话题中的消息。
 
-多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_LEAVE`。
+Android 端多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_LEAVE`。
 
 示例代码如下：
 
@@ -125,7 +130,7 @@ try {
 
 群主和群管理员可以调用 `ChatManager#removeMemberWithChatThread` 方法将指定成员 (群管理员或普通成员) 踢出消息话题，被踢出消息话题的成员将不再接收到消息话题中的消息。
 
-被踢出消息话题的成员会收到 `ChatMessageEventListener#onChatMessageThreadUserRemoved` 回调。多设备登录时，执行踢人操作的成员的其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_KICK`。
+被踢出消息话题的成员会收到 `ChatMessageEventListener#onChatMessageThreadUserRemoved` 回调。Android 端多设备登录时，执行踢人操作的成员的其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_KICK`。
 
 // TODO：研发确认
 
@@ -157,7 +162,7 @@ try {
 
 仅群主和群管理员以及消息话题的创建者可以调用 `ChatManager#updateChatThreadName` 方法修改消息话题名称。
 
-单设备登录时，消息话题所属群组的所有成员会收到 `ChatMessageEventListener#onChatMessageThreadUpdated` 回调；多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_UPDATE`。
+单设备登录时，消息话题所属群组的所有成员会收到 `ChatMessageEventListener#onChatMessageThreadUpdated` 回调；Android 端多设备登录时，其他设备会同时收到 `ChatMultiDeviceEventListener#onThreadEvent` 回调，回调事件为 `ChatMultiDeviceEvent.THREAD_UPDATE`。
 
 示例代码如下：
 

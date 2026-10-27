@@ -132,13 +132,13 @@ const recallListener: ChatMessageEventListener = {
 };
 ```
 
-`ChatRecalledMessageInfo#recalledMessage` 可能为 `undefined`。消息对象不可用时，可通过 `recalledMessageId` 及业务侧记录的消息所属话题更新界面，不要依赖消息对象始终存在。
+`ChatRecalledMessageInfo.recalledMessage` 可能为 `undefined`。消息对象不可用时，可通过 `recalledMessageId` 及业务侧记录的消息所属话题更新界面，不要依赖消息对象始终存在。
 
 ## 获取消息话题中的消息
 
 从服务器还是本地数据库获取消息话题中的消息取决于你的生产环境。
 
-你可以通过 `ChatConversation#isChatThread` 判断当前会话是否为消息话题会话。
+你可以通过 `ChatConversation.isChatThread` 判断当前会话是否为消息话题会话。
 
 ### 从服务器获取单个消息话题的消息（消息漫游）
 
