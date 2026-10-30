@@ -7,8 +7,8 @@ HarmonyOS SDK 中，删除好友、退出群组或退出聊天室时，本地会
 | 操作 | 默认情况 | 保留本地会话或消息的设置 |
 | :--- | :--- | :--- |
 | 删除好友 | 删除该好友对应的本地单聊会话及其中的本地消息。 | 调用 `deleteContact` 时，将 `keepConversation` 设置为 `true`。 |
-| 退出群组 | 保留本地群聊会话，默认删除本地群聊消息。 | 在初始化 SDK 前调用 `ChatOptions#setDeleteMessagesOnLeaveGroup(false)` 保留本地消息。 |
-| 退出聊天室 | 默认删除该聊天室的本地消息。 | 在初始化 SDK 前调用 `ChatOptions#setDeleteMessagesOnLeaveChatroom(false)` 保留本地消息。 |
+| 退出群组 | 删除本地群聊会话及其中的本地消息。 | 在初始化 SDK 前调用 `ChatOptions#setDeleteMessagesOnLeaveGroup(false)`，本地会话和本地消息都会保留。 |
+| 退出聊天室 | 默认删除该聊天室会话及本地消息。 | 在初始化 SDK 前调用 `ChatOptions#setDeleteMessagesOnLeaveChatroom(false)`，本地会话和本地消息都会保留。 |
 
 你还可以通过 `ChatManager` 删除当前用户服务端和本地的指定会话、仅删除本地会话、批量删除本地会话或清空全部会话；通过 `Conversation` 删除指定的本地消息。
 
@@ -197,8 +197,8 @@ if (contactManager) {
 
 | API 名称 | 所属模块/类 | 说明 |
 | :--- | :--- | :--- |
-| [`setDeleteMessagesOnLeaveGroup`](#功能说明) | `ChatOptions` | 设置主动或被动退出群组时是否删除本地群聊消息。 |
-| [`setDeleteMessagesOnLeaveChatroom`](#功能说明) | `ChatOptions` | 设置主动或被动退出聊天室时是否删除本地聊天室消息。 |
+| [`setDeleteMessagesOnLeaveGroup`](#功能说明) | `ChatOptions` | 设置主动或被动退出群组时是否删除本地群聊会话及消息。 |
+| [`setDeleteMessagesOnLeaveChatroom`](#功能说明) | `ChatOptions` | 设置主动或被动退出聊天室时是否删除本地聊天室会话及消息。 |
 | [`deleteConversationFromServer`](#单向删除服务端会话) | `ChatManager` | 删除当前用户服务端和本地的指定会话，并可设置是否同时删除历史消息。 |
 | [`deleteConversation`](#删除单个本地会话) | `ChatManager` | 删除单个指定的本地会话，并可设置是否同时删除本地历史消息。 |
 | [`deleteConversations`](#批量删除本地会话) | `ChatManager` | 批量删除多个本地会话，并可设置是否同时删除本地消息。 |

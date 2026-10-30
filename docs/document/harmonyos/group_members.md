@@ -399,7 +399,7 @@ ChatClient.getInstance().groupManager()?.checkIfInGroupMutelist(groupId)
 
 ### 获取禁言列表
 
-仅群主或群管理员可以调用 `GroupManager#fetchGroupMutelist` 分页获取禁言列表。返回 `Map` 的 `key` 为成员 ID，`value` 为禁言时长，单位为毫秒。
+仅群主或群管理员可以调用 `GroupManager#fetchGroupMutelist` 分页获取禁言列表。返回 `Map` 的 `key` 为成员 ID，`value` 为该成员的禁言到期时间（Unix 时间戳，单位为毫秒）。
 
 ```typescript
 ChatClient.getInstance().groupManager()?.fetchGroupMutelist(

@@ -276,7 +276,7 @@ ChatClient.getInstance().chatManager()?.sendMessage(message);
 | `to` | `string` | 必填 | 目标会话 ID。 |
 | `filePath` | `string` | 必填 | 视频文件的本地路径，路径必须可访问。 |
 | `duration` | `number` | 必填 | 视频时长，单位为秒。 |
-| `imageThumbPath` | `string` | 可选 | 视频缩略图的本地路径。传入后，SDK 会读取缩略图尺寸并写入消息体。 |
+| `imageThumbPath` | `string` | 可选 | 视频缩略图的本地路径，SDK 会随消息上传该缩略图。缩略图尺寸不会自动读取，如需展示或上报尺寸，请应用自行获取后调用 `VideoMessageBody#setThumbnailSize(width, height)` 设置。 |
 
 ### 发送文件消息
 

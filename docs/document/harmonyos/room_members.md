@@ -224,7 +224,7 @@ ChatClient.getInstance().chatroomManager()?.unmuteChatroomMembers(
 
 仅聊天室所有者和管理员可以调用 `ChatroomManager#fetchChatroomMutes`，分页获取聊天室禁言列表。
 
-返回的 `Map<string, number>` 中，`key` 为成员用户 ID，`value` 为禁言时长，单位为毫秒。
+返回的 `Map<string, number>` 中，`key` 为成员用户 ID，`value` 为该成员的禁言到期时间（Unix 时间戳，单位为毫秒）。
 
 ```typescript
 // pageNum	当前页码，从 1 开始。

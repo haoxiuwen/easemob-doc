@@ -28,7 +28,7 @@
 
 ### 修改群组名称
 
-仅群主和群管理员可以调用 `changeGroupName` 方法设置和修改群组名称，其他群成员会收到`GroupChangeListener#onSpecificationChanged` 回调。群名称的长度限制为 255 个字符。
+仅群主和群管理员可以调用 `changeGroupName` 方法设置和修改群组名称，其他群成员会收到`GroupListener#onSpecificationChanged` 回调。群名称的长度限制为 255 个字符。
 
 示例代码如下：
 
@@ -38,7 +38,7 @@ ChatClient.getInstance().groupManager()?.changeGroupName(groupId, changedGroupNa
 
 ### 修改群组描述
 
-仅群主和群管理员可以调用 `changeGroupDescription` 方法设置和修改群组描述，其他群成员会收到`GroupChangeListener#onSpecificationChanged` 回调。群描述的长度限制为 2048 个字符。
+仅群主和群管理员可以调用 `changeGroupDescription` 方法设置和修改群组描述，其他群成员会收到`GroupListener#onSpecificationChanged` 回调。群描述的长度限制为 2048 个字符。
 
 示例代码如下：
 
@@ -109,7 +109,7 @@ ChatClient.getInstance().groupManager()?.fetchGroupFromServer(this.groupId)
 
 ### 更新群公告
 
-仅群主和群管理员可以调用 `updateGroupAnnouncement` 方法设置和更新群公告，群公告的长度限制为 512 个字符。群公告更新后，其他群成员收到 `GroupChangeListener#onAnnouncementChanged` 回调。
+仅群主和群管理员可以调用 `updateGroupAnnouncement` 方法设置和更新群公告，群公告的长度限制为 512 个字符。群公告更新后，其他群成员收到 `GroupListener#onAnnouncementChanged` 回调。
 
 示例代码如下：
 
@@ -131,7 +131,7 @@ ChatClient.getInstance().groupManager()?.fetchGroupAnnouncement(groupId).then(re
 
 #### 上传共享文件
 
-所有群组成员均可以调用 `uploadGroupSharedFile` 方法上传共享文件至群组，单个群共享文件大小限制为 10 MB。上传共享文件后，其他群成员收到 `GroupChangeListener#onSharedFileAdded` 回调。
+所有群组成员均可以调用 `uploadGroupSharedFile` 方法上传共享文件至群组，单个群共享文件大小限制为 10 MB。上传共享文件后，其他群成员收到 `GroupListener#onSharedFileAdded` 回调。
 
 示例代码如下：
 
@@ -159,7 +159,7 @@ ChatClient.getInstance().groupManager()?.downloadGroupSharedFile(groupId, shared
 
 #### 删除共享文件
 
-所有群成员均可以调用 `deleteGroupSharedFile` 方法删除群共享文件。删除共享文件后，其他群成员收到 `GroupChangeListener#OnSharedFileDeleted` 回调。
+所有群成员均可以调用 `deleteGroupSharedFile` 方法删除群共享文件。删除共享文件后，其他群成员收到 `GroupListener#onSharedFileDeleted` 回调。
 
 群主和群管理员可删除全部的群共享文件，群成员只能删除自己上传的群文件。
 

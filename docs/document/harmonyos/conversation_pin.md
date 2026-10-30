@@ -2,7 +2,7 @@
 
 ## 功能说明
 
-会话置顶用于将重要的单聊、群聊或聊天室会话固定在会话列表靠前位置，方便用户快速找到高频或重点会话。置顶状态会保存到服务端，并同步到当前用户的其他设备和本地会话数据。
+会话置顶用于将重要的单聊、群聊会话固定在会话列表靠前位置，方便用户快速找到高频或重点会话；不支持聊天室会话。置顶状态会保存到服务端，并同步到当前用户的其他设备和本地会话数据。
 
 ## 功能开通
 
@@ -30,7 +30,7 @@ let chatManager = ChatClient.getInstance().chatManager();
 
 if (chatManager) {
     chatManager.pinConversation(
-        // 单聊传入对端用户 ID，群聊传入群组 ID，聊天室传入聊天室 ID。
+        // 单聊传入对端用户 ID，群聊传入群组 ID；聊天室会话不支持置顶。
         conversationId,
         // true 表示置顶，false 表示取消置顶。
         isPinned
@@ -46,7 +46,7 @@ if (chatManager) {
 
 | 参数 | 类型 | 说明 |
 | :--- | :--- | :--- |
-| `conversationId` | `string` | 会话 ID。单聊为对端用户 ID，群聊为群组 ID，聊天室为聊天室 ID。 |
+| `conversationId` | `string` | 会话 ID。单聊为对端用户 ID，群聊为群组 ID；不支持聊天室会话。 |
 | `isPinned` | `boolean` | 是否置顶：`true` 表示置顶，`false` 表示取消置顶。 |
 
 `pinConversation` 不直接返回更新后的会话对象。调用成功后，可重新读取本地会话，并通过以下接口获取置顶状态：
@@ -218,7 +218,7 @@ let sortedConversations: Array<Conversation> = pinnedConversations.concat(
 
 ## 注意事项
 
-- 会话置顶支持单聊、群聊和聊天室会话。
+- 会话置顶支持单聊和群聊会话；不支持聊天室会话，传入聊天室会话 ID 会返回 `INVALID_CONVERSATION`（107）。
 - `conversationId` 不能为空；调用失败时，应根据 `ChatError#errorCode` 和 `description` 处理。
 - 最多可以置顶 50 个会话。
 - 会话置顶状态保存在服务端，并同步到当前用户的其他设备。

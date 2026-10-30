@@ -45,7 +45,7 @@ ChatClient.getInstance().chatManager()?.deleteAllConversationsAndMessages(clearS
 - 按消息 ID 删除：每次最多可删除 50 条消息。
 
 删除后，该用户无法从服务端拉取到该消息，不过，与该用户的单聊、群聊和聊天室会话中的其它用户的服务器消息不受影响，可以漫游获取。
-多设备情况下，登录该账号的其他设备会收到 `MultiDeviceListener` 中的 `onMessageRemoved` 回调，已删除的消息自动从设备本地移除。
+多设备情况下，登录该账号的其他设备会收到 `MultiDevicesListener` 中的 `onMessageRemoved` 回调，已删除的消息自动从设备本地移除。
 
 :::tip
 要单向删除服务端聊天室的历史消息，需将 SDK 升级至 1.4.0 或以上版本，并联系商务开通聊天室漫游消息功能。

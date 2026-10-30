@@ -6,7 +6,7 @@
 
 ## 技术原理
 
-环信即时通讯 IM SDK 提供 `ChatroomManager` 类 和 `ChatRoom` 类，支持对聊天室成员的管理，包括获取、添加和移出聊天室成员等，主要方法如下：
+环信即时通讯 IM SDK 提供 `ChatroomManager` 类 和 `Chatroom` 类，支持对聊天室成员的管理，包括获取、添加和移出聊天室成员等，主要方法如下：
 
 - 获取聊天室成员列表
 - 退出聊天室
@@ -30,7 +30,7 @@
 
 ### 获取聊天室成员列表
 
-所有聊天室成员均可调用 `fetchChatRoomMembers` 方法获取当前聊天室成员列表。服务器不对成员进行排序，因此，返回的成员列表不保证有序。
+所有聊天室成员均可调用 `fetchChatroomMembers` 方法获取当前聊天室成员列表。服务器不对成员进行排序，因此，返回的成员列表不保证有序。
 
 示例代码如下：
 
@@ -67,13 +67,13 @@ let options = new ChatOptions({
 options.setDeleteMessagesOnLeaveChatroom(false);
 ```
 
-与群主无法退出群组不同，聊天室所有者可以离开聊天室，重新进入聊天室仍是该聊天室的所有者。若 `ChatOptions#canChatroomOwnerLeave` 参数在初始化时设置为 `true` 时，聊天室所有者可以离开聊天室；若该参数设置为 `false`，聊天室所有者调用 `leaveChatRoom` 方法离开聊天室时会提示错误 706 `ChatError#CHATROOM_OWNER_NOT_ALLOW_LEAVE`。
+与群主无法退出群组不同，聊天室所有者可以离开聊天室，重新进入聊天室仍是该聊天室的所有者。若 `ChatOptions#canChatroomOwnerLeave` 参数在初始化时设置为 `true` 时，聊天室所有者可以离开聊天室；若该参数设置为 `false`，聊天室所有者调用 `leaveChatroom` 方法离开聊天室时会提示错误 706 `ChatError#CHATROOM_OWNER_NOT_ALLOW_LEAVE`。
 
 #### 被移出
 
 仅聊天室所有者和管理员可调用 `ChatroomManager#removeChatroomMembers` 方法将单个或多个成员移出聊天室。
 
-被移出后，该成员收到 `onRemovedFromChatRoom` 回调，其他成员收到 `ChatroomListener#onMemberExited` 回调。
+被移出后，该成员收到 `onRemovedFromChatroom` 回调，其他成员收到 `ChatroomListener#onMemberExited` 回调。
 
 被移出的成员可以重新进入聊天室。
 
@@ -102,7 +102,7 @@ ChatClient.getInstance().chatroomManager()?.removeChatroomMembers(chatroomId, me
 
 仅聊天室所有者和管理员可调用 `ChatroomManager#blockChatroomMembers` 方法将指定成员添加至黑名单。
 
-被加入黑名单后，该成员收到 `ChatroomListener#onRemovedFromChatRoom` 回调，移出原因为 `LEAVE_REASON#BE_KICK`。默认情况下，其他成员不会收到事件通知。如需该事件，请联系商务开通。
+被加入黑名单后，该成员收到 `ChatroomListener#onRemovedFromChatroom` 回调，移出原因为 `LEAVE_REASON#BE_KICK`。默认情况下，其他成员不会收到事件通知。如需该事件，请联系商务开通。
 
 被加入黑名单后，该成员无法再收发聊天室消息并被移出聊天室，黑名单中的成员如想再次加入聊天室，聊天室所有者或管理员必须先将其移出黑名单列表。
 
@@ -158,7 +158,7 @@ ChatClient.getInstance().chatroomManager()?.fetchChatroomWhitelist(chatroomId).t
 
 #### 检查自己是否在聊天室白名单中
 
-所有聊天室成员可以调用 `checkIfInChatRoomWhiteList` 方法检查自己是否在聊天室白名单中，示例代码如下：
+所有聊天室成员可以调用 `checkIfInWhitelist` 方法检查自己是否在聊天室白名单中，示例代码如下：
 
 ```typescript
 ChatClient.getInstance().chatroomManager()?.checkIfInWhitelist(chatroomId).then(inWhitelist => {

@@ -2,7 +2,7 @@
 
 ## 功能说明
 
-会话标记用于为会话添加业务分类，例如标星、待处理或重要客户等。SDK 支持为单聊、群聊和聊天室会话添加或移除标记。
+会话标记用于为会话添加业务分类，例如标星、待处理或重要客户等。SDK 支持为单聊和群聊会话添加或移除标记；不支持聊天室会话。
 
 SDK 提供 `MARK_0` 至 `MARK_19` 共 20 个标记，单个会话最多可同时包含 20 个标记。各标记的业务含义由应用自行定义和维护。
 
@@ -73,7 +73,7 @@ EMClient.getInstance()
 
 | 参数 | 类型 | 说明 |
 | :--- | :--- | :--- |
-| `conversationIds` | `List<String>` | 会话 ID 列表，不能为空；单次最多传入 20 个会话 ID。单聊为对端用户 ID，群聊为群组 ID，聊天室为聊天室 ID。 |
+| `conversationIds` | `List<String>` | 会话 ID 列表，不能为空；单次最多传入 20 个会话 ID。单聊为对端用户 ID，群聊为群组 ID；不支持聊天室会话。 |
 | `mark` | `EMConversation.EMMarkType` | 添加的标记，取值为 `MARK_0` 至 `MARK_19`。 |
 | `callback` | `EMCallBack` | 操作结果回调。调用成功触发 `onSuccess`，失败触发 `onError`。 |
 
@@ -206,7 +206,7 @@ EMClient.getInstance().removeMultiDeviceListener(multiDeviceListener);
 
 ## 注意事项
 
-- 会话标记支持单聊、群聊和聊天室会话。
+- 会话标记支持单聊和群聊会话；不支持聊天室会话。
 - 会话标记取值为 `MARK_0` 至 `MARK_19`，各标记的业务含义由应用维护。
 - 单个会话最多可以同时包含 20 个标记。
 - `asyncAddConversationMark` 和 `asyncRemoveConversationMark` 可同时操作多个会话，单次最多传入 20 个会话 ID。

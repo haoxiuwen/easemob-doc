@@ -10,7 +10,7 @@
 
 ## 技术原理
 
-环信即时通讯 IM SDK 提供 `ChatRoomManager` 类 和 `ChatRoom` 类用于聊天室管理，支持你通过调用 API 在项目中实现如下功能：
+环信即时通讯 IM SDK 提供 `ChatroomManager` 类 和 `Chatroom` 类用于聊天室管理，支持你通过调用 API 在项目中实现如下功能：
 
 - 创建聊天室
 - 从服务器获取聊天室列表

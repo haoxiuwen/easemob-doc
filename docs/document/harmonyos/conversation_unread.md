@@ -91,7 +91,7 @@ if (chatManager) {
 
 ## 指定会话的未读消息数清零
 
-调用 `clearConversationUnreadMessageCount` 将指定会话的本地未读消息数清零。清零状态会同步到当前账号的其他设备，但不会向消息发送方发送已读回执。
+调用 `clearConversationUnreadMessageCount` 将指定单聊或群聊会话的本地未读消息数清零；不支持聊天室会话。清零状态会同步到当前账号的其他设备，但不会向消息发送方发送已读回执。
 
 其他登录设备会通过 `MultiDevicesListener#onConversationEvent` 收到 `MultiDevicesEvent#CONVERSATION_UNREAD_MESSAGECOUNT_CLEARED` 事件。其中，`conversationId` 为会话 ID，`type` 为会话类型。
 
@@ -200,7 +200,7 @@ ChatClient.getInstance().removeMultiDevicesListener(multiDevicesListener);
 | [`getConversation`](#获取指定会话的未读消息数) | `ChatManager` | 是 | 获取指定的本地会话对象。 |
 | [`getUnreadMsgCount`](#获取指定会话的未读消息数) | `Conversation` | 是 | 获取指定会话的本地未读消息数。 |
 | [`clearAllConversationUnreadMessageCount`](#将所有会话的未读消息数清零) | `ChatManager` | 是 | 清零全部本地会话的未读消息数，并同步当前账号的其他设备。 |
-| [`clearConversationUnreadMessageCount`](#指定会话的未读消息数清零) | `ChatManager` | 是 | 清零指定会话的本地未读消息数，并同步当前账号的其他设备。 |
+| [`clearConversationUnreadMessageCount`](#指定会话的未读消息数清零) | `ChatManager` | 否 | 清零指定单聊或群聊会话的本地未读消息数，并同步当前账号的其他设备；不支持聊天室会话，调用返回 `INVALID_PARAM`（110）。 |
 | [`addMultiDevicesListener`](#监听多设备上的未读数变化) / [`removeMultiDevicesListener`](#监听多设备上的未读数变化) | `ChatClient` | 是 | 添加或移除多设备监听器。 |
 | [`isRead`](#单条消息的已读状态和已读回执) | `ChatMessage` | 是 | 查询单条消息的本地已读状态。 |
 | [`sendMessageReadReceipts`](#单条消息的已读状态和已读回执) | `ChatManager` | 否 | 为单聊或群聊消息发送已读回执。 |

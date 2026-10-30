@@ -69,8 +69,8 @@ ChatClient.getInstance().chatManager()?.sendMessage(message);
 2. 发送方调用 `createVoiceSendMessage` 方法传入接收方的用户 ID（群聊或聊天室分别为群组 ID 或聊天室 ID）、语音文件的路径和语音时长创建语音消息，然后调用 `sendMessage` 方法发送消息。SDK 会将语音文件上传至环信服务器。
 
 ```typescript
-// `filePathOrUri` 为语音文件的本地路径或者文件的 URI，`duration` 为语音时长（单位为秒）。
-let message = ChatMessage.createVoiceSendMessage(to, filePathOrUri, duration);
+// `filePath` 为语音文件的本地路径，`duration` 为语音时长（单位为秒）。
+let message = ChatMessage.createVoiceSendMessage(to, filePath, duration);
 if (!message) {
     return;
 }

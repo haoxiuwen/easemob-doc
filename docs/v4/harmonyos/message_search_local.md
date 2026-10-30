@@ -178,7 +178,7 @@ const messages = conversation?.searchMessagesBetweenTime(startTimestamp, endTime
 |文件消息  | `FileMessageBody.getFileName`       |文件名“report.pdf”|
 |位置消息  |   `LocationMessageBody.getAddress` + `LocationMessageBody.getBuildingName`     | 地址\建筑物名称“北京市朝阳区\国贸大厦”|
 |自定义消息|    `CustomMessageBody.event`    | 自定义事件名“gift”|
-|合并消息  |`CombineMessageBody.getTitle` + `ChatCombineMessageBody.getSummary`    | 标题\摘要“聊天记录\包含5条消息”|
+|合并消息  |`CombineMessageBody.getTitle` + `CombineMessageBody.getSummary`    | 标题\摘要“聊天记录\包含5条消息”|
 
 ### 只搜索扩展信息
 

@@ -284,7 +284,7 @@ ChatClient.getInstance().groupManager()?.leaveGroup(groupId)
     });
 ```
 
-退出群组时，SDK 默认删除本地群聊消息，但保留本地群聊会话。如需保留本地消息，应在 SDK 初始化前调用 `ChatOptions#setDeleteMessagesOnLeaveGroup(false)`。详见 [删除会话](conversation_delete.html#功能说明)。
+退出群组时，SDK 默认删除本地群聊会话及其中的本地消息。如需保留本地会话和本地消息，应在 SDK 初始化前调用 `ChatOptions#setDeleteMessagesOnLeaveGroup(false)`。详见 [删除会话](conversation_delete.html#功能说明)。
 
 ### 移出成员
 

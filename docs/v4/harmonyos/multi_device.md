@@ -167,10 +167,10 @@ ChatClient.getInstance().addConnectionListener({
 
 例如，账号 A 同时在设备 A 和 B 上登录，账号 A 在设备 A 上进行操作，设备 B 会收到这些操作对应的通知。
 
-你需要先实现 `MultiDeviceListener` 类监听其他设备上的操作，然后调用 `addMultiDeviceListener` 方法添加多设备监听。
+你需要先实现 `MultiDevicesListener` 类监听其他设备上的操作，然后调用 `addMultiDevicesListener` 方法添加多设备监听。
 
 ```typescript
-//实现 `MultiDeviceListener` 监听其他设备上的操作。
+//实现 `MultiDevicesListener` 监听其他设备上的操作。
 let multiDeviceListener: MultiDevicesListener = {
   onContactEvent: (event: MultiDevicesEvent, target: string, ext: string): void => {
     switch (event) {

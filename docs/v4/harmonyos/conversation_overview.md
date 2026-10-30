@@ -13,7 +13,7 @@
 
 - 方式二：通过获取会话信息时创建会话：
 
-  调用 [getConversation](https://doc.easemob.com/apidoc/harmony/chat3.0/classes/ChatManager.ChatManager.html#getConversation) 接口时，若将参数 `createIfNotExist` 设为 `true`（默认值），即时通讯 IM 会在会话不存在时自动创建该会话。  
+  调用 [getConversation](https://doc.easemob.com/apidoc/harmony/chat3.0/classes/ChatManager.ChatManager.html#getConversation) 接口时，若将参数 `createIfNotExist` 设为 `true`（默认值为 `false`），即时通讯 IM 会在会话不存在时自动创建该会话。
 
 #### 会话 ID
 

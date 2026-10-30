@@ -152,7 +152,7 @@ if (chatManager) {
 
 ### 根据消息 ID 获取本地消息
 
-调用 `ChatManager#loadMessages` 可以根据一个或多个消息 ID 从本地数据库获取消息。每次应传入 `1-20` 个消息 ID，返回结果按照消息时间倒序排列。
+调用 `ChatManager#loadMessages` 可以根据一个或多个消息 ID 从本地数据库获取消息。每次应传入 `1-20` 个消息 ID，返回结果按消息时间戳升序（由早到晚）排列。
 
 参数说明如下：
 
@@ -166,7 +166,7 @@ let chatManager = ChatClient.getInstance().chatManager();
 
 chatManager?.loadMessages(messageIds)
   .then((messages: Array<ChatMessage>): void => {
-    // messages 按消息时间倒序排列。
+    // messages 按消息时间升序（由早到晚）排列。
   })
   .catch((error: ChatError): void => {
     // 处理查询错误。

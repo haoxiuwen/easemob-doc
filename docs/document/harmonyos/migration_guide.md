@@ -234,7 +234,7 @@ SDK 5.0.0 新增建群后按配置类型更新群组属性的能力：
 | :---------------- | :----- | :------------- |
 | `Group#canJoinDirectly()` | 已删除                              | 不再提供该判断。请改用 `isPublic()` 与 `isJoinApprovalRequired()` 组合表达可见性与审批语义。    |
 | 无                         | `Group#isJoinApprovalRequired()` | 判断群组是否需要审批入群。群配置缺失时返回 `true`。                                          |
-| 无                         | `Group#isInviteNeedConfirm()`    | 判断邀请用户进群是否需要对方确认，仅在 `GroupManager#inviteUser` 邀请入群时生效。群配置缺失时返回 `true`。 |
+| 无                         | `Group#isInviteNeedConfirm()`    | 判断邀请用户进群是否需要对方确认，仅在 `GroupManager#inviteUsers` 邀请入群时生效。群配置缺失时返回 `true`。 |
 | 无                         | `Group#getUsers(): string[]`     | 获取群主、管理员和普通成员的用户 ID 列表，按 owner → admins → members 顺序合并，可能包含重复的用户 ID。   |
 
 `Group#isPublic()` 和 `Group#isMemberAllowToInvite()` 的方法签名保持不变，调用方无需修改。

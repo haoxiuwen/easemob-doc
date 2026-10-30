@@ -61,7 +61,7 @@ ChatClient.getInstance().groupManager()?.fetchPublicGroupsFromServer(pageSize, c
 
 2. 调用 `joinGroup` 或 `applyJoinToGroup` 方法传入群组 ID，申请加入对应群组。
 
-   - 调用 `joinGroup` 方法加入无需群主或管理员审批的公开群，即 `GroupStyle` 设置为 `GroupStylePublicOpenJoin`。申请人不会收到任何回调，其他群成员会收到 `GroupChangeListener#onMemberJoined` 回调。
+   - 调用 `joinGroup` 方法加入无需群主或管理员审批的公开群，即 `GroupStyle` 设置为 `GroupStylePublicOpenJoin`。申请人不会收到任何回调，其他群成员会收到 `GroupListener#onMemberJoined` 回调。
 
    示例代码如下：
 
@@ -79,11 +79,11 @@ ChatClient.getInstance().groupManager()?.fetchPublicGroupsFromServer(pageSize, c
    });
    ```
 
-   群主或群管理员收到 `GroupChangeListener#onRequestToJoinReceived` 回调：
+   群主或群管理员收到 `GroupListener#onRequestToJoinReceived` 回调：
 
    - 若同意加入群组，需要调用 `acceptApplication` 方法。
 
-   申请人会收到 `GroupChangeListener#onRequestToJoinAccepted` 回调，其他群成员会收到 `GroupChangeListener#onMemberJoined` 回调。
+   申请人会收到 `GroupListener#onRequestToJoinAccepted` 回调，其他群成员会收到 `GroupListener#onMemberJoined` 回调。
 
    示例代码如下：
 
@@ -93,7 +93,7 @@ ChatClient.getInstance().groupManager()?.fetchPublicGroupsFromServer(pageSize, c
    });
    ```
 
-   - 若群主或群管理员拒绝申请人入群，需要调用 `declineApplication` 方法。申请人会收到 `GroupChangeListener#onRequestToJoinDeclined` 回调。
+   - 若群主或群管理员拒绝申请人入群，需要调用 `declineApplication` 方法。申请人会收到 `GroupListener#onRequestToJoinDeclined` 回调。
 
    示例代码如下：
 
@@ -119,7 +119,7 @@ ChatClient.getInstance().groupManager()?.fetchPublicGroupsFromServer(pageSize, c
    });
    ```
 
-   - 普通成员邀请人入群，需要调用 `inviteUser` 方法：
+   - 普通成员邀请人入群，需要调用 `inviteUsers` 方法：
 
    对于私有群，`GroupStyle` 设置为 `GroupStylePrivateMemberCanInvite` 时，所有群成员均可以邀请人进群。
 
@@ -151,7 +151,7 @@ ChatClient.getInstance().groupManager()?.fetchPublicGroupsFromServer(pageSize, c
 
 #### 群成员主动退出群组
 
-群成员可以调用 `leaveGroup` 方法退出群组。其他成员收到 `GroupChangeListener#onMembersExited` 回调。
+群成员可以调用 `leaveGroup` 方法退出群组。其他成员收到 `GroupListener#onMembersExited` 回调。
 
 退出群组后，该用户将不再收到群消息。群主不能调用该接口退出群组，只能调用 `destroyGroup` 解散群组。
 
@@ -165,7 +165,7 @@ ChatClient.getInstance().groupManager()?.leaveGroup(groupId).then(() => {
 
 #### 群成员被移出群组
 
-仅群主和群管理员可以调用 `removeUsersFromGroup` 方法将单个或多个成员移出群组。被踢出群组后，被踢成员将会收到群组事件回调 `GroupChangeListener#onUserRemoved`，其他成员将会收到回调 `GroupChangeListener#onMembersExited`。被移出群组后，用户还可以再次加入群组。
+仅群主和群管理员可以调用 `removeUsersFromGroup` 方法将单个或多个成员移出群组。被踢出群组后，被踢成员将会收到群组事件回调 `GroupListener#onUserRemoved`，其他成员将会收到回调 `GroupListener#onMembersExited`。被移出群组后，用户还可以再次加入群组。
 
 - 移出群成员，示例代码如下：
 
@@ -239,7 +239,7 @@ ChatClient.getInstance().groupManager()?.fetchMembersAttributes(groupId, members
 
 #### 变更群主
 
-仅群主可以调用 `changeOwner` 方法将群所有权移交给指定群成员。成功移交后，原群主变为普通成员，新群主收到 `GroupChangeListener#onOwnerChanged` 回调。
+仅群主可以调用 `changeOwner` 方法将群所有权移交给指定群成员。成功移交后，原群主变为普通成员，新群主收到 `GroupListener#onOwnerChanged` 回调。
 
 示例代码如下：
 
@@ -251,7 +251,7 @@ ChatClient.getInstance().groupManager()?.changeOwner(groupId, newOwner).then((gr
 
 #### 添加群组管理员
 
-仅群主可以调用 `addGroupAdmin` 方法添加群管理员。成功添加后，新管理员及其他管理员收到 `GroupChangeListener#onAdminAdded` 回调。
+仅群主可以调用 `addGroupAdmin` 方法添加群管理员。成功添加后，新管理员及其他管理员收到 `GroupListener#onAdminAdded` 回调。
 
 管理员除了不能解散群组等少数权限外，拥有对群组的绝大部分权限。
 
@@ -265,7 +265,7 @@ ChatClient.getInstance().groupManager()?.addGroupAdmin(groupId, admin).then((gro
 
 #### 移除群组管理员权限
 
-仅群主可以调用 `removeGroupAdmin` 方法移除群管理员。成功移除后，被移除的管理员及其他管理员收到 `GroupChangeListener#onAdminRemoved` 回调。
+仅群主可以调用 `removeGroupAdmin` 方法移除群管理员。成功移除后，被移除的管理员及其他管理员收到 `GroupListener#onAdminRemoved` 回调。
 
 群管理员被移除群管理权限后将只拥有群成员的权限。
 
@@ -294,7 +294,7 @@ let adminList: Array<string> = group.adminList();
 
 #### 将成员加入群组白名单
 
-仅群主和群管理员可以调用 `addToGroupWhitelist` 方法将指定群成员加入群白名单。群成员被添加至群白名单后，该群成员及其他未操作的群管理员和群主将会收到群组事件回调 `GroupChangeListener#onWhitelistAdded`。
+仅群主和群管理员可以调用 `addToGroupWhitelist` 方法将指定群成员加入群白名单。群成员被添加至群白名单后，该群成员及其他未操作的群管理员和群主将会收到群组事件回调 `GroupListener#onWhitelistAdded`。
 
 即使开启了群组全员禁言，群组白名单中的成员仍可以发送群组消息。不过，禁言列表上的用户即使加入了群白名单仍无法在群组中发送消息。
 
@@ -308,7 +308,7 @@ ChatClient.getInstance().groupManager()?.addToGroupWhitelist(groupId, members).t
 
 仅群主和群管理员可以调用 `removeFromGroupWhitelist` 方法将指定群成员移出群白名单。
 
-群成员被移除群白名单后，该群成员及其他未操作的群管理员和群主将会收到群组事件回调 `GroupChangeListener#onWhitelistRemoved`。
+群成员被移除群白名单后，该群成员及其他未操作的群管理员和群主将会收到群组事件回调 `GroupListener#onWhitelistRemoved`。
 
 ```typescript
 ChatClient.getInstance().groupManager()?.removeFromGroupWhitelist(groupId, members).then(() => {
@@ -340,7 +340,7 @@ ChatClient.getInstance().groupManager()?.fetchGroupWhitelist(groupId).then((whit
 
 #### 将成员加入群组黑名单
 
-仅群主和群管理员可以调用 `blockUsers` 方法将指定成员添加至黑名单。被加入黑名单后，该成员收到 `GroupChangeListener#OnUserRemoved` 回调。默认情况下，其他群成员不会收到事件通知。如需该事件，请联系商务开通。
+仅群主和群管理员可以调用 `blockUsers` 方法将指定成员添加至黑名单。被加入黑名单后，该成员收到 `GroupListener#onUserRemoved` 回调。默认情况下，其他群成员不会收到事件通知。如需该事件，请联系商务开通。
 
 黑名单中的成员会被移出群组，无法再收发群消息，只有先被移出黑名单才能重新加入群组。
 
@@ -382,7 +382,7 @@ ChatClient.getInstance().groupManager()?.fetchGroupBlocklist(groupId, pageNum, p
 
 #### 将成员加入群组禁言列表
 
-仅群主和群管理员可以调用 `muteGroupMembers` 方法将指定成员添加至群组禁言列表。群成员被群主或者群管理员加入禁言列表中后，被禁言成员和其他未操作的管理员或者群主将会收到群组事件回调 `GroupChangeListener#onMutelistAdded`。群成员被加入群禁言列表后，将不能够发言，即使其被加入群白名单也不能发言。
+仅群主和群管理员可以调用 `muteGroupMembers` 方法将指定成员添加至群组禁言列表。群成员被群主或者群管理员加入禁言列表中后，被禁言成员和其他未操作的管理员或者群主将会收到群组事件回调 `GroupListener#onMutelistAdded`。群成员被加入群禁言列表后，将不能够发言，即使其被加入群白名单也不能发言。
 
 ```typescript
 // `duration`：禁言时间。传 -1 表示永久禁言。
@@ -395,7 +395,7 @@ ChatClient.getInstance().groupManager()?.muteGroupMembers(groupId, muteMembers, 
 
 仅群主和群管理员可以调用 `unmuteGroupMembers` 方法将指定成员移出群组禁言列表。
 
-群成员被移出禁言列表后可以在群组中正常发送消息，被移出的群成员及其他未操作的管理员或者群主将会收到群组事件回调 `GroupChangeListener#onMutelistRemoved`。
+群成员被移出禁言列表后可以在群组中正常发送消息，被移出的群成员及其他未操作的管理员或者群主将会收到群组事件回调 `GroupListener#onMutelistRemoved`。
 
 ```typescript
 ChatClient.getInstance().groupManager()?.unmuteGroupMembers(groupId, members).then((group) => {
@@ -429,7 +429,7 @@ ChatClient.getInstance().groupManager()?.fetchGroupMutelist(groupId, pageNum, pa
 
 仅群主和群管理员可以调用 `muteAllMembers` 方法开启全员禁言。全员禁言开启后不会在一段时间内自动解除禁言，需要调用 `unmuteAllMembers` 方法解除全员禁言。
 
-开启群组全员禁言后，除了在白名单中的群成员，其他成员将不能发言。开启群组全员禁言后，群成员将会收到群组事件回调 `GroupChangeListener#onAllMemberMuteStateChanged`。
+开启群组全员禁言后，除了在白名单中的群成员，其他成员将不能发言。开启群组全员禁言后，群成员将会收到群组事件回调 `GroupListener#onAllMemberMuteStateChanged`。
 
 群组全员禁言状态（`Group#isAllMemberMuted`）存储在本地数据库中，下次登录时可以直接从本地获取到。
  
@@ -443,7 +443,7 @@ ChatClient.getInstance().groupManager()?.muteAllMembers(groupId).then((group) =>
 
 #### 关闭群组全员禁言
 
-仅群主和群管理员可以调用 `unmuteAllMembers` 方法取消全员禁言。关闭群组全员禁言后，群成员将会收到群组事件回调 `GroupChangeListener#onAllMemberMuteStateChanged`。
+仅群主和群管理员可以调用 `unmuteAllMembers` 方法取消全员禁言。关闭群组全员禁言后，群成员将会收到群组事件回调 `GroupListener#onAllMemberMuteStateChanged`。
 
 示例代码如下：
 
